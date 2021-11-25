@@ -19,6 +19,11 @@ brew install yarn
 ```
 or on Windows, you can follow [these instructions](https://phoenixnap.com/kb/yarn-windows).
 
+And then install all dependencies of the app with:
+```
+yarn install
+```
+
 ## Available Scripts
 
 In the project directory, you can run:
