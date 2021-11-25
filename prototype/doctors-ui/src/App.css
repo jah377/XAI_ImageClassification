@@ -1,0 +1,41 @@
+html,
+ body { /* inflate body to full height */
+  height: 100%;
+  margin: 0;
+}
+
+.container{
+  margin: 20px;
+  height: 95%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.stepper-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+}
+
+
+
+.content {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.preview {
+  max-width: 400px;
+}
+
+.preview-container {
+  border: 2px dashed #AAAa;
+  height: 400px;
+  width: 400px;
+}

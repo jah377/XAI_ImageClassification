@@ -4,3 +4,6 @@ TXT/
 
 
 .ipynb_checkpoints/*
+
+# front-end stuff
+prototype/doctors-ui/node_modules/*
