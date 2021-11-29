@@ -2,6 +2,8 @@ name: Build & deploy
 
 on:
   push:
+    paths:
+      - './prototype/doctours-ui/**'
     branches:
       - main
 
@@ -38,23 +40,30 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: production-files
-          path: ./build
+          path: ./prototype/doctors-ui/build/
+          if-no-files-found: error
 
   deploy:
     name: Deploy
     needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if:
+      github.ref == 'refs/heads/main'
+
+    # run this script in the frontend folder
+    defaults:
+      run:
+        working-directory: prototype/doctors-ui
 
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v2
         with:
           name: production-files
-          path: ./build
+          path: ./prototype/doctors-ui/build/
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
+          publish_dir: ./prototype/doctors-ui/build/
