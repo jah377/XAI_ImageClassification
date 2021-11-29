@@ -1,21 +1,25 @@
-import * as React from 'react';
+import { React, useContext, useState } from 'react';
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepButton from '@mui/material/StepButton';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-
-const steps = [
-    // 'Upload Image',
-    'Preview Image',
-    'Analysis',
-    'Report',
-];
+import { StepContext } from "../context/StepContext"
 
 export default function HorizontalNonLinearStepper(props) {
-    const [activeStep, setActiveStep] = React.useState(0);
-    const [completed, setCompleted] = React.useState({});
+
+    const [state, setState] = useContext(StepContext);
+
+    
+    const setActiveStep = (step) => {
+        setState(state => ({ ...state, step: step }))
+    };
+    
+    const activeStep = state.step;
+    const steps = props.stageNames;
+
+    const [completed, setCompleted] = useState({});
 
     const totalSteps = () => {
         return steps.length;
@@ -40,11 +44,12 @@ export default function HorizontalNonLinearStepper(props) {
                 // find the first step that has been completed
                 steps.findIndex((step, i) => !(i in completed))
                 : activeStep + 1;
-        setActiveStep(newActiveStep);
+
+        setActiveStep(newActiveStep)
     };
 
     const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
+        setActiveStep(state.step - 1)
     };
 
     const handleStep = (step) => () => {
@@ -85,12 +90,12 @@ export default function HorizontalNonLinearStepper(props) {
                             Back
                         </Button> */}
 
-                        {/* <Box sx={{ flex: '1 1 auto' }} /> */}
-                        {/* <Button onClick={handleNext} sx={{ mr: 1 }}>
+            {/* <Box sx={{ flex: '1 1 auto' }} /> */}
+            {/* <Button onClick={handleNext} sx={{ mr: 1 }}>
                             Next
                         </Button> */}
 
-                        {/* {activeStep !== steps.length &&
+            {/* {activeStep !== steps.length &&
                             (completed[activeStep] ? (
                                 <Typography variant="caption" sx={{ display: 'inline-block' }}>
                                     Step {activeStep + 1} already completed
@@ -102,7 +107,7 @@ export default function HorizontalNonLinearStepper(props) {
                                         : 'Complete Step'}
                                 </Button>
                             ))} */}
-                    {/* </Box>
+            {/* </Box>
                 </React.Fragment> */}
             {/* </div> */}
         </Box>
