@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import UploadService from "../services/file-upload-service";
-import { StepContext } from "../context/StepContext"
+import { StepContext } from "../context/StepContext";
 
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
