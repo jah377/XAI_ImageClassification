@@ -11,7 +11,13 @@ import StagesOverview from "./components/stages-overview.component"
 
 function App() {
 
-  const stageElements = [<UploadImages />, <PreviewImages />, <h1>TODO Analysis</h1>, <h1>TODO Report</h1>]
+  const stageElements = [
+    <UploadImages />,
+    <PreviewImages/>,
+    <h1>TODO Analysis</h1>,
+    <h1>TODO Report</h1>
+  ]
+
   const stageNames = [
     'Upload Image',
     'Preview Image',
