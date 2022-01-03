@@ -39,3 +39,24 @@ html,
   height: 400px;
   width: 400px;
 }
+
+
+/* ANALYSIS COMPONENT */
+
+#layers {
+  position: relative;
+}
+
+.layer{
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#sliders {
+  position: relative;
+}
+
+.slider {
+  width: inherit;
+}
