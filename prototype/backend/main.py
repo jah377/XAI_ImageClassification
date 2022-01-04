@@ -19,13 +19,15 @@ mockResponse = {
             "name": "Bounding Box",
             "image": mockBoundingBox,
             "width": 224,
-            "height": 224
+            "height": 224,
+            "order": 1
         },
         {
             "name": "Heatmap",
             "image": mockHeatmap,
             "width": 224,
-            "height": 224
+            "height": 224,
+            "order": 2
         }
     ]
 }

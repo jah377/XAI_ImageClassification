@@ -60,7 +60,7 @@ export default function Analysis(props) {
 
     const toggleVisibility = (checked, layer) => {
         let copyLayer = layer
-        let copyLayers = value.layer
+        let copyLayers = value.layers
         let index = copyLayers.indexOf(copyLayer)
 
         if (copyLayer.active)
@@ -84,7 +84,7 @@ export default function Analysis(props) {
                 </Box>
                 <Box id="sliders">
                     {value.layers.map((layer, index) => { // iterating through all images and displaying their name and editing functions (slider)
-                        return <Paper className="slider-container" >
+                        return <Paper className="editing-container" >
                             <Typography key={`slider-name-${index}`} id={`slider-name-${index}`} gutterBottom>
                                 {layer.name}
                             </Typography>
@@ -96,6 +96,7 @@ export default function Analysis(props) {
                                     icon={<VisibilityOffIcon />}
                                     checkedIcon={<VisibilityIcon />} />
                                 <Slider
+                                    className="slider"
                                     key={`slider-image-${index}`} // unique key, since we are iterating through an array
                                     aria-labelledby={`slider-name-${index}`} // making the connection between Label (typography and the slider)
                                     onChange={(_, opacity) => { handleOpacity(opacity, layer) }} // change-handler (updating and rerendering images with new opacity)

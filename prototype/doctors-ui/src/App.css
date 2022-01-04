@@ -21,8 +21,6 @@ html,
   flex-direction: column;
 }
 
-
-
 .content {
   margin: 20px 0;
   display: flex;
@@ -63,17 +61,19 @@ html,
   margin-top: 300px;
 }
 
-.slider-container {
+.editing-container {
   margin: 5%;
-  padding: 10%;
-  width: 150%;
+  padding: 2% 20% 2% 5%;
+  width: 200%;
 }
 
 .slider {
   width: inherit;
+  padding: 2%;
 }
 
 .editing-functions {
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
