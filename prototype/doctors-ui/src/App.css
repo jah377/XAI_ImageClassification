@@ -43,6 +43,12 @@ html,
 
 /* ANALYSIS COMPONENT */
 
+.analysis-view {
+  display: flex;
+  flex-direction: row;
+  /* justify-content: ; */
+}
+
 #layers {
   position: relative;
 }
@@ -54,9 +60,20 @@ html,
 }
 
 #sliders {
-  position: relative;
+  margin-top: 300px;
+}
+
+.slider-container {
+  margin: 5%;
+  padding: 10%;
+  width: 150%;
 }
 
 .slider {
   width: inherit;
+}
+
+.editing-functions {
+  display: flex;
+  flex-direction: row;
 }

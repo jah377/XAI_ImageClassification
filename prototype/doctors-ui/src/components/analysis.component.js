@@ -3,6 +3,11 @@ import { StepContext } from "../context/StepContext";
 import { render } from "@testing-library/react";
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import Checkbox from '@mui/material/Checkbox';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 export default function Analysis(props) {
 
@@ -13,6 +18,7 @@ export default function Analysis(props) {
         {
             "name": "Bounding Box",
             "image": mockBoundingBox,
+            "active": true,
             "style": {
                 "opacity": 1
             }
@@ -20,6 +26,7 @@ export default function Analysis(props) {
         {
             "name": "Heatmap",
             "image": mockHeatmap,
+            "active": true,
             "style": {
                 "opacity": 1
             }
@@ -35,43 +42,58 @@ export default function Analysis(props) {
         let copyLayer = layer
         let copyLayers = value.layers
         let index = copyLayers.indexOf(copyLayer)
-        
+
         copyLayer.style = { ...copyLayer.style, "opacity": newOpacity }
         copyLayers[index] = copyLayer
         setValue({ "layers": copyLayers, ...value })
     };
 
+    const toggleVisibility = (layer, index) => {
+        let copyLayer = layer
+        let copyLayers = value.layers
+        if (copyLayer.active)
+            copyLayer.style = { ...copyLayer.style, "display": "none" }
+        else
+            copyLayer.style = { ...copyLayer.style, "display": "block"}
+        copyLayer.active = !copyLayer.active
+        copyLayers[index] = copyLayer
+        setValue({ "layers": copyLayers, ...value })
+    }
+
     render()
     return (
         <div>
-            <h1>POOP</h1>
-
-            <div id="layers">
-                {value.layers.map((layer, i) => {
-                    return <img className="layer" key={`image-layer-${i}`} src={layer.image} style={layer.style} />
-                })}
-            </div>
-            <div id="sliders">
-                {value.layers.map((layer, i) => {
-                    return <div>
-                        <Typography key={`slider-name-${i}`} id={`slider-name-${i}`} gutterBottom>
-                            {layer.name}
-                        </Typography>
-                        <Slider
-                            className="slider"
-                            key={`slider-image-${i}`} // unique key, since we are iterating through an array
-                            aria-labelledby={`slider-name-${i}`} // making the connection between Label (typography and the slider)
-                            onChange={(_, opacity) => { handleOpacity(opacity, layer) }} // change-handler (updating and rerendering images with new opacity)
-                            min={0}
-                            step={0.01}
-                            max={1}
-                            value={layer.style.opacity} // the value (opacity) we are manipulation with this slider
-                            valueLabelDisplay="auto"
-                        />
-                    </div>
-                }
-                )}
-            </div>
+            <h1>Analysis</h1>
+            <Box className="analysis-view">
+                <Box id="layers">
+                    {value.layers.map((layer, index) => { // iterating through all images and displaying them
+                        return <img className="layer" key={`image-layer-${index}`} src={layer.image} style={layer.style} />
+                    })}
+                </Box>
+                <Box id="sliders">
+                    {value.layers.map((layer, index) => { // iterating through all images and displaying their name and editing functions (slider)
+                        return <Paper className="slider-container" >
+                            <Typography key={`slider-name-${index}`} id={`slider-name-${index}`} gutterBottom>
+                                {layer.name}
+                            </Typography>
+                            <Box className="editing-functions">
+                                <Checkbox onChange={ _ => toggleVisibility(layer, index)} checked={layer.active} icon={<VisibilityOffIcon />} checkedIcon={<VisibilityIcon />} />
+                                <Slider
+                                    key={`slider-image-${index}`} // unique key, since we are iterating through an array
+                                    aria-labelledby={`slider-name-${index}`} // making the connection between Label (typography and the slider)
+                                    onChange={(_, opacity) => { handleOpacity(opacity, layer) }} // change-handler (updating and rerendering images with new opacity)
+                                    min={0}
+                                    step={0.01}
+                                    max={1}
+                                    value={layer.style.opacity} // the value (opacity) we are manipulation with this slider
+                                    valueLabelDisplay="auto"
+                                />
+                            </Box>
+                        </Paper>
+                    }
+                    )}
+                </Box>
+            </Box   >
         </div>
     );
 }
