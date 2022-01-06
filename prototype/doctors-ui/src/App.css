@@ -87,15 +87,14 @@ html,
   flex-direction: row;
   align-items: center;
 }
-
 .upload-notes {
-  marginTop: 20;
-  marginBottom: 20;
+  margin-top: 20;
+  margin-bottom: 20;
   display: 'block'
 }
 
 .preview-notes {
-  marginTop: 20;
-  marginBottom: 20;
+  margin-top: 20;
+  margin-bottom: 20;
   display: 'block'
 }
