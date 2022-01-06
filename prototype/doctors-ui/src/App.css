@@ -28,6 +28,16 @@ html,
   align-items: flex-start;
 }
 
+.upload {
+  max-width: 400px;
+}
+
+.upload-container {
+  border: 2px dashed #AAAa;
+  height: 400px;
+  width: 400px;
+}
+
 .preview {
   max-width: 400px;
 }
@@ -76,4 +86,16 @@ html,
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+
+.upload-notes {
+  marginTop: 20;
+  marginBottom: 20;
+  display: 'block'
+}
+
+.preview-notes {
+  marginTop: 20;
+  marginBottom: 20;
+  display: 'block'
 }
