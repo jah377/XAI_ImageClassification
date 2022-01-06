@@ -21,8 +21,6 @@ html,
   flex-direction: column;
 }
 
-
-
 .content {
   margin: 20px 0;
   display: flex;
@@ -38,4 +36,44 @@ html,
   border: 2px dashed #AAAa;
   height: 400px;
   width: 400px;
+}
+
+
+/* ANALYSIS COMPONENT */
+
+.analysis-view {
+  display: flex;
+  flex-direction: row;
+  /* justify-content: ; */
+}
+
+#layers {
+  position: relative;
+}
+
+.layer{
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#sliders {
+  margin-top: 300px;
+}
+
+.editing-container {
+  margin: 5%;
+  padding: 2% 20% 2% 5%;
+  width: 200%;
+}
+
+.slider {
+  width: inherit;
+  padding: 2%;
+}
+
+.editing-functions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }

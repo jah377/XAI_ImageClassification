@@ -3,6 +3,7 @@ import "./App.css";
 
 import UploadImages from "./components/file-upload-component";
 import PreviewImages from "./components/preview-image.component";
+import Analysis from "./components/analysis.component";
 
 import HorizontalNonLinearStepper from "./components/top-menu.component";
 
@@ -11,7 +12,13 @@ import StagesOverview from "./components/stages-overview.component"
 
 function App() {
 
-  const stageElements = [<UploadImages />, <PreviewImages />, <h1>TODO Analysis</h1>, <h1>TODO Report</h1>]
+  const stageElements = [
+    <UploadImages />,
+    <PreviewImages/>,
+    <Analysis/>,
+    <h1>TODO Report</h1>
+  ]
+
   const stageNames = [
     'Upload Image',
     'Preview Image',
