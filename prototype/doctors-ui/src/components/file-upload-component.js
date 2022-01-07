@@ -63,6 +63,10 @@ export default function UploadImages(props) {
                     {previewImage && (
                         <img className="upload" src={previewImage} alt="" />
                     )}
+
+                    {!previewImage && context.previewImage && (
+                        <img className="upload" src={context.previewImage} alt="" />
+                    )}
                 </div>
 
                 <div>

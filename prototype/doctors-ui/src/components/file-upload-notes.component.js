@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { StepContext } from "../context/StepContext";
 import { TextField } from "@mui/material";
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -10,8 +10,6 @@ export default function FileUploadUserNotes(props) {
     const [context, setContext] = useContext(StepContext);
 
     const patientNotes = context.patientNotes
-
-    const [value, setValue] = useState(null);
 
     let setPatientNotesOnKeyToValue = (key, value) => {
         patientNotes[key] = value
