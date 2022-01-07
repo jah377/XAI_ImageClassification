@@ -43,7 +43,7 @@ def home():
 def analysis():
     return jsonify(mockResponse)
 
-if __name__ == '__main__' 
+if __name__ == '__main__':
     if os.environ['ENV'] == 'prod':
         app.run()
     else:
