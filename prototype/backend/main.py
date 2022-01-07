@@ -43,11 +43,12 @@ def home():
 def analysis():
     return jsonify(mockResponse)
 
-if __name__ == '__main__' and os.environ['ENV'] == 'prod':
-    app.run()
-else:
-    host = "localhost"
-    port = 8082
-    debug = False
-    options = {}
-    app.run(host, port, debug, options)
+if __name__ == '__main__' 
+    if os.environ['ENV'] == 'prod':
+        app.run()
+    else:
+        host = "localhost"
+        port = 8082
+        debug = False
+        options = {}
+        app.run(host, port, debug, options)

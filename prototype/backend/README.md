@@ -47,13 +47,13 @@ python main.py
 
 ```
 git checkout deployment
-git push --force origin main:deployment
+git merge -X theirs main
 rm -r protoype/backend/static/* 
 
 cd prototype/doctors-ui
 yarn build
 
-cp build/* ../backend/static/ # copy static files into static-folder of the python server
+cp -r build/* ../backend/static/ # copy static files into static-folder of the python server
 
 git add .
 git commit -m "New release"
