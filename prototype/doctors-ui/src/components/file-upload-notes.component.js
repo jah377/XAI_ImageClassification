@@ -5,7 +5,6 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 
-
 export default function FileUploadUserNotes(props) {
 
     const [context, setContext] = useContext(StepContext);
@@ -28,8 +27,9 @@ export default function FileUploadUserNotes(props) {
                 <DatePicker
                     label="Appointment Date"
                     value={context.patientNotes.appointmentDate}
-                    onChange={(event) => { setPatientNotesOnKeyToValue("appointmentDate", event.target.value) }}
+                    onChange={(value) => { setPatientNotesOnKeyToValue("appointmentDate", value) }}
                     renderInput={(params) => <TextField {...params} />}
+                    inputFormat="dd/MM/yyyy"
                 />
             </LocalizationProvider>
 
@@ -40,7 +40,7 @@ export default function FileUploadUserNotes(props) {
                     label="First Name"
                     varient="outlined"
                     value={context.patientNotes.firstName}
-                    onChange={(event) => { setPatientNotesOnKeyToValue("firstName", event.target.value)}}
+                    onChange={(event) => { setPatientNotesOnKeyToValue("firstName", event.target.value) }}
                 />
 
                 <TextField
@@ -55,9 +55,10 @@ export default function FileUploadUserNotes(props) {
             {/* patient dob */}
             <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
-                    label="Appointment Date"
+                    label="Date of Birth"
+                    inputFormat="dd/MM/yyyy"
                     value={context.patientNotes.dateOfBirth}
-                    onChange={(event) => { setPatientNotesOnKeyToValue("dateOfBirth", event.target.value) }}
+                    onChange={(value) => { setPatientNotesOnKeyToValue("dateOfBirth", value) }}
                     renderInput={(params) => <TextField {...params} />}
                 />
             </LocalizationProvider>

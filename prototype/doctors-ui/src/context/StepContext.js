@@ -4,10 +4,10 @@ const StepContext = createContext([{}, () => ({})]);
 
 
 const emptyPatientNotes = {
-    "appointmentDate": "",
+    "appointmentDate": null,
     "firstName": "",
     "lastName": "",
-    "dateOfBirth": "",
+    "dateOfBirth": null,
     "physicianName": "",
     "medicalNotes": "",
 }
