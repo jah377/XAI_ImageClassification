@@ -10,20 +10,25 @@ export default function FileUploadUserNotes(props) {
 
     const [context, setContext] = useContext(StepContext);
 
-    const [first_name, setFirstName] = useState("");
-    const [last_name, setLastName] = useState("");
-    const [physician_name, setPhysicianName] = useState("");
-    const [medical_notes, setMedicalNotes] = useState("");
+    const patientNotes = context.patientNotes
 
     const [value, setValue] = useState(null);
+
+    let setPatientNotesOnKeyToValue = (key, value) => {
+        patientNotes[key] = value
+        setContext(context => ({
+            ...context,
+            patientNotes: patientNotes
+        }))
+    }
 
     return (
         <div>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                     label="Appointment Date"
-                    value={value}
-                    onChange={(newValue) => { setValue(newValue) }}
+                    value={context.patientNotes.appointmentDate}
+                    onChange={(event) => { setPatientNotesOnKeyToValue("appointmentDate", event.target.value) }}
                     renderInput={(params) => <TextField {...params} />}
                 />
             </LocalizationProvider>
@@ -34,14 +39,16 @@ export default function FileUploadUserNotes(props) {
                     className="upload-notes"
                     label="First Name"
                     varient="outlined"
-                    onChange={(newFirstName) => { setFirstName(newFirstName.target.value) }}
+                    value={context.patientNotes.firstName}
+                    onChange={(event) => { setPatientNotesOnKeyToValue("firstName", event.target.value)}}
                 />
 
                 <TextField
                     className="upload-notes"
                     label="Last Name"
                     varient="outlined"
-                    onChange={(newLastName) => { setLastName(newLastName.target.value) }}
+                    value={context.patientNotes.lastName}
+                    onChange={(event) => { setPatientNotesOnKeyToValue("lastName", event.target.value) }}
                 />
             </form>
 
@@ -49,8 +56,8 @@ export default function FileUploadUserNotes(props) {
             <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                     label="Appointment Date"
-                    value={value}
-                    onChange={(newValue) => { setValue(newValue) }}
+                    value={context.patientNotes.dateOfBirth}
+                    onChange={(event) => { setPatientNotesOnKeyToValue("dateOfBirth", event.target.value) }}
                     renderInput={(params) => <TextField {...params} />}
                 />
             </LocalizationProvider>
@@ -62,7 +69,8 @@ export default function FileUploadUserNotes(props) {
                     label="Physician Name"
                     varient="outlined"
                     fullWidth
-                    onChange={(newPhysicianName) => { setPhysicianName(newPhysicianName.target.value) }}
+                    value={context.patientNotes.physicianName}
+                    onChange={(event) => { setPatientNotesOnKeyToValue("physicianName", event.target.value) }}
                 />
             </form>
 
@@ -75,7 +83,8 @@ export default function FileUploadUserNotes(props) {
                     multiline
                     rows={10}
                     fullWidth
-                    onChange={(newMedicalNotes) => { setMedicalNotes(newMedicalNotes.target.value) }}
+                    value={context.patientNotes.medicalNotes}
+                    onChange={(event) => { setPatientNotesOnKeyToValue("medicalNotes", event.target.value) }}
                 />
             </form>
         </div>
