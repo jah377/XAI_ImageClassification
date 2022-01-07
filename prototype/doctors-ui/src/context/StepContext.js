@@ -13,7 +13,7 @@ const emptyPatientNotes = {
 }
 
 const emptyXRayNotes = {
-    "xRayNotes": ""
+    "notes": ""
 }
 
 const StepContextProvider = (props) => {

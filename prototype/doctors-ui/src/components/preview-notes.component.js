@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { StepContext } from "../context/StepContext";
 import { TextField } from "@mui/material";
 
@@ -6,8 +6,16 @@ import { TextField } from "@mui/material";
 
 export default function PreviewImagesUserNotes(props) {
 
-    const [context] = useContext(StepContext);
-    const [notes, setNotes] = useState("");
+    const [context, setContext] = useContext(StepContext);
+    const xRayNotes = context.xRayNotes
+
+    let setXRayNotesOnKeyToValue = (key, value) => {
+        xRayNotes[key] = value
+        setContext(context => ({
+            ...context,
+            xRayNotes: xRayNotes
+        }))
+    }
 
     return (
         <div>
@@ -19,7 +27,9 @@ export default function PreviewImagesUserNotes(props) {
                     multiline
                     fullWidth
                     rows={10}
-                    onChange={(newNotes) => { setNotes(newNotes.target.value) }} />
+                    value={context.xRayNotes.notes}
+                    onChange={(event) => { setXRayNotesOnKeyToValue("notes", event.target.value) }}
+                />
             </form>
         </div>
     );
