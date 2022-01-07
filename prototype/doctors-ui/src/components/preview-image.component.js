@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { StepContext } from "../context/StepContext";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { render } from "@testing-library/react";
-
+import PreviewImagesUserNotes from "./preview-notes.component";
 
 export default function PreviewImages(props) {
 
@@ -10,10 +10,19 @@ export default function PreviewImages(props) {
     console.log(context)
     render()
     return (
-        <TransformWrapper>
-            <TransformComponent>
-                <img className="preview" src={context.previewImage} alt="" />
-            </TransformComponent>
-        </TransformWrapper>
+        <div>
+            <TransformWrapper>
+                <TransformComponent>
+                    <img
+                        className="preview"
+                        src={context.previewImage}
+                        alt=""
+                    />
+                </TransformComponent>
+            </TransformWrapper>
+
+            <PreviewImagesUserNotes />
+        </div>
+
     );
 }
