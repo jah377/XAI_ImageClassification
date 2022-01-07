@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, jsonify
 from flask_cors import CORS
 
@@ -41,10 +43,11 @@ def home():
 def analysis():
     return jsonify(mockResponse)
 
-host = "localhost"
-port = 8082
-debug = False
-options = {}
-
-if __name__ == '__main__':
+if __name__ == '__main__' and os.environ['ENV'] == 'prod':
+    app.run()
+else:
+    host = "localhost"
+    port = 8082
+    debug = False
+    options = {}
     app.run(host, port, debug, options)
