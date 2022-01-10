@@ -4,7 +4,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import uuid
 
-from services.p_service import PredictionService
+from services.prediction_service import PredictionService
 
 # app = Flask(__name__, static_url_path='/dsp')
 app = Flask(__name__)
@@ -69,7 +69,7 @@ def upload():
     return jsonify({"id": id})
 
 if __name__ == '__main__':
-    if os.environ['ENV'] == 'prod':
+    if os.environ['ENV'] and os.environ['ENV'] == 'prod':
         app.run()
     else:
         host = "localhost"
