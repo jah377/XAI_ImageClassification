@@ -10,6 +10,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 import AnalysisDisplayService from "../services/analysis.service";
+import FileUploadService from "../services/file-upload-service";
 
 export default function Analysis(props) {
 
@@ -34,19 +35,24 @@ export default function Analysis(props) {
         setValue({ "layers": layers })
     }
 
-    // useEffect is being run before and after each render of the site, to limit the API call only to when no data is in the frontend, the if-clause is introduced
-    useEffect(() => { 
-        if (value.layers.length === 0) {
-            console.log("Fetching Analysis")
-            AnalysisDisplayService.fetchData(setResponse)
-        }
-    })
-
-    const [context] = useContext(StepContext);
-
+    const [context, setContext] = useContext(StepContext);
     const [value, setValue] = React.useState({
         "layers": []
     });
+
+    // useEffect is being run before and after each render of the site, to limit the API call only to when no data is in the frontend, the if-clause is introduced
+    useEffect(() => {
+        // TODO remove this call once we are done with quick testing
+        FileUploadService.upload(context.previewImage, (id) => {
+            setContext(context => ({
+                ...context,
+                uploadId: id
+            }))
+
+            console.log("Fetching Analysis")
+            AnalysisDisplayService.fetchData(context['uploadId'], setResponse)
+        })
+    }, [])
 
     const handleOpacity = (newOpacity, layer) => {
         let copyLayer = layer
@@ -66,7 +72,7 @@ export default function Analysis(props) {
         if (copyLayer.active)
             copyLayer.style = { ...copyLayer.style, "display": "none" }
         else
-            copyLayer.style = { ...copyLayer.style, "display": "block"}
+            copyLayer.style = { ...copyLayer.style, "display": "block" }
         copyLayer.active = checked
         copyLayers[index] = copyLayer
         setValue({ ...value, "layers": copyLayers })
