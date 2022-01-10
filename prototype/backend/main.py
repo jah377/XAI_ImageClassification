@@ -4,6 +4,8 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import uuid
 
+from services.explainability_service import ExplainabilityService
+from services.image_decoder import ImageDecoder
 from services.prediction_service import PredictionService
 
 # app = Flask(__name__, static_url_path='/dsp')
@@ -44,9 +46,10 @@ xrayStack = {}
 # def home():
 #     return app.send_static_file('index.html')
 
-import re, time, base64
-import numpy as np
-import cv2
+decoder = ImageDecoder()
+predictionService = PredictionService()
+explanationService = ExplainabilityService()
+
 
 @app.route('/api/v1/xray/analysis/<id>', methods=['GET'])
 def analysis(id):
@@ -54,10 +57,8 @@ def analysis(id):
     imageBase64 = xrayStack[id]
     print(imageBase64[0:50])
     imageBase64 = imageBase64.split('base64,')[1]
-    byte_data = bytearray(base64.b64decode(imageBase64))
-    img = cv2.imdecode(np.array(byte_data), cv2.IMREAD_COLOR)
+    img = decoder.decodeFromBase64(imageBase64)
     print(img.shape)
-    predictionService = PredictionService()
     return jsonify(mockResponse)
 
 @app.route('/api/v1/xray/upload', methods=['POST'])
