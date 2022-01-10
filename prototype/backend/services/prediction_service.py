@@ -6,7 +6,7 @@ class PredictionService:
 
     def __init__(self):
         paths = [
-        "services/model_2.h5" 
+        "models/model_2.h5" 
             ]
         self.models = [Model().load(path) for path in paths]
     

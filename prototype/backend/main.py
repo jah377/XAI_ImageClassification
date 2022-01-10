@@ -44,10 +44,9 @@ xrayStack = {}
 # def home():
 #     return app.send_static_file('index.html')
 
-from PIL import Image
-from io import BytesIO
 import re, time, base64
 import numpy as np
+import cv2
 
 @app.route('/api/v1/xray/analysis/<id>', methods=['GET'])
 def analysis(id):
@@ -55,17 +54,9 @@ def analysis(id):
     imageBase64 = xrayStack[id]
     print(imageBase64[0:50])
     imageBase64 = imageBase64.split('base64,')[1]
-    
-    byte_data = base64.b64decode(imageBase64)
-    image_data = BytesIO(byte_data)
-    img = Image.open(image_data)
-
-    
-    data = np.asarray(img)
-    print(type(data))
-    # summarize shape
-    print(data.shape)
-
+    byte_data = bytearray(base64.b64decode(imageBase64))
+    img = cv2.imdecode(np.array(byte_data), cv2.IMREAD_COLOR)
+    print(img.shape)
     predictionService = PredictionService()
     return jsonify(mockResponse)
 
