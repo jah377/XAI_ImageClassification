@@ -90,16 +90,18 @@ html,
 .upload-notes {
   margin-top: 20;
   margin-bottom: 20;
-  display: 'block'
+  display: 'block';
 }
 
 .preview-notes {
   margin-top: 20;
   margin-bottom: 20;
-  display: 'block'
+  display: 'block';
 }
 
-
+.menu-input{
+  /* margin-bottom: 25px; */
+}
 
 /* ANALYSIS COMPONENT */
 

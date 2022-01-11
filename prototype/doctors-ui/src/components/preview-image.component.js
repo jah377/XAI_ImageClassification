@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { StepContext } from "../context/StepContext";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import Stack from '@mui/material/Stack';
 import PreviewImagesUserNotes from "./preview-notes.component";
 
 export default function PreviewImages(props) {
@@ -9,17 +10,20 @@ export default function PreviewImages(props) {
 
     return (
         <div>
-            <TransformWrapper>
-                <TransformComponent>
-                    <img
-                        className="preview"
-                        src={context.previewImage}
-                        alt=""
-                    />
-                </TransformComponent>
-            </TransformWrapper>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
 
-            <PreviewImagesUserNotes />
+                <TransformWrapper>
+                    <TransformComponent>
+                        <img
+                            className="preview"
+                            src={context.previewImage}
+                            alt=""
+                        />
+                    </TransformComponent>
+                </TransformWrapper>
+
+                <PreviewImagesUserNotes />
+            </Stack>
         </div>
     );
 }

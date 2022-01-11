@@ -56,36 +56,39 @@ export default function UploadImages(props) {
 
     return (
         <div>
-            <div>
-                <div className="upload-container">
-                    {/* TODO make this a drag and drop zone */}
-                    {/* <MyDropZone onSuccess={this.upload}/> */}
-                    {previewImage && (
-                        <img className="upload" src={previewImage} alt="" />
-                    )}
-
-                    {!previewImage && context.previewImage && (
-                        <img className="upload" src={context.previewImage} alt="" />
-                    )}
-                </div>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
 
                 <div>
-                    <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
-                        <label htmlFor="contained-button-file">
-                            <Input accept="image/*" id="contained-button-file" type="file" onChange={selectFile} />
-                            <Button variant="contained" component="span">
-                                Select
+                    <div className="upload-container">
+                        {/* TODO make this a drag and drop zone */}
+                        {/* <MyDropZone onSuccess={this.upload}/> */}
+                        {previewImage && (
+                            <img className="upload" src={previewImage} alt="" />
+                        )}
+
+                        {!previewImage && context.previewImage && (
+                            <img className="upload" src={context.previewImage} alt="" />
+                        )}
+                    </div>
+
+                    <div>
+                        <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
+                            <label htmlFor="contained-button-file">
+                                <Input accept="image/*" id="contained-button-file" type="file" onChange={selectFile} />
+                                <Button variant="contained" component="span">
+                                    Select
+                                </Button>
+                            </label>
+                            <Button variant="contained" component="span" onClick={upload}>
+                                Upload
                             </Button>
-                        </label>
-                        <Button variant="contained" component="span" onClick={upload}>
-                            Upload
-                        </Button>
-                    </Stack>
+                        </Stack>
+                    </div>
                 </div>
-            </div>
-            <div>
-                <FileUploadUserNotes />
-            </div>
+                <div className='upload-notes'>
+                    <FileUploadUserNotes />
+                </div>
+            </Stack>
         </div>
 
     );
