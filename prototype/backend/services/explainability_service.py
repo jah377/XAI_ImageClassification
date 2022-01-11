@@ -2,6 +2,8 @@ from lime import lime_image
 from skimage.segmentation import mark_boundaries
 import cv2
 
+from constants import *
+
 from models.gradcam import GradCAM
 class ExplainabilityService:
 
@@ -9,7 +11,7 @@ class ExplainabilityService:
         pass
 
     def get_lime(self, model, input_image):
-        image_re = input_image.reshape((1, 224, 224, 3))
+        image_re = input_image.reshape((1, WIDTH, HEIGHT, 3))
         explainer = lime_image.LimeImageExplainer()
         explanation = explainer.explain_instance(image_re.astype('uint8'), model.predict,  
                                          top_labels=3, hide_color=0, num_samples=1000)
@@ -17,8 +19,8 @@ class ExplainabilityService:
         return mark_boundaries(temp_1, mask_1)
 
     def get_heatmap(self, model, input_image):
-        image_re = input_image.reshape((1, 224, 224, 3))
+        image_re = input_image.reshape((1, WIDTH, HEIGHT, 3))
         icam = GradCAM(model, layerName='conv5_block32_concat') 
         heatmap = icam.compute_heatmap(image_re)
-        heatmap = cv2.resize(heatmap, (224, 224))
+        heatmap = cv2.resize(heatmap, (WIDTH, HEIGHT))
         return heatmap

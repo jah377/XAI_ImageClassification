@@ -2,6 +2,8 @@ import unittest
 
 from services.image_decoder import ImageDecoder
 
+from constants import *
+
 # run with:
 # python -m tests.image_loading_test
 class ImageLoadingTest(unittest.TestCase):
@@ -14,7 +16,7 @@ class ImageLoadingTest(unittest.TestCase):
         decoder = ImageDecoder()
         for imageBase64 in [a,b,c]:
             img = decoder.decodeFromBase64(imageBase64)
-            self.assertEqual(img.shape, (224,224,3))
+            self.assertEqual(img.shape, (WIDTH, HEIGHT, 3))
   
 if __name__ == '__main__':
     unittest.main()
