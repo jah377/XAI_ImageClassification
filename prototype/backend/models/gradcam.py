@@ -28,7 +28,7 @@ class GradCAM:
         raise ValueError("Could not find 4D layer. Cannot apply GradCAM.")
 
 
-    def compute_heatmap(self, image, eps=1e-8):
+    def compute_heatmap(self, image, colormap=cv2.COLORMAP_VIRIDIS, eps=1e-8):
         # construct our gradient model by supplying (1) the inputs
         # to our pre-trained model, (2) the output of the (presumably)
         # final 4D layer in the network, and (3) the output of the
@@ -78,6 +78,8 @@ class GradCAM:
         denom = (heatmap.max() - heatmap.min()) + eps
         heatmap = numer / denom
         heatmap = (heatmap * 255).astype("uint8")
+
+        heatmap = cv2.applyColorMap(heatmap, colormap)
         # return the resulting heatmap to the calling function
         return heatmap
 

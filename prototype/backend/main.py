@@ -50,7 +50,6 @@ decoder = ImageDecoder()
 predictionService = PredictionService()
 explanationService = ExplainabilityService()
 
-
 @app.route('/api/v1/xray/analysis/<id>', methods=['GET'])
 def analysis(id):
     id = uuid.UUID(id)
