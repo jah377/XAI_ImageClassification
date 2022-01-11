@@ -22,7 +22,8 @@ export default function Analysis(props) {
     }
 
     let setResponse = (response) => {
-        let layers = response.analyzed_images
+        let layers = response.explanations
+        console.log(response)
         // enhancing the images with information needed in the frontend (active, style for opacity)
         layers = layers.map(layer => {
             return {
@@ -32,7 +33,7 @@ export default function Analysis(props) {
                 "image": `${prefixImage}, ${layer.image}`
             }
         })
-        setValue({ "layers": layers })
+        setValue({ "layers": layers, "baseImage": response.baseImage})
     }
 
     const [context, setContext] = useContext(StepContext);
@@ -42,16 +43,8 @@ export default function Analysis(props) {
 
     // useEffect is being run before and after each render of the site, to limit the API call only to when no data is in the frontend, the if-clause is introduced
     useEffect(() => {
-        // TODO remove this call once we are done with quick testing
-        FileUploadService.upload(context.previewImage, (id) => {
-            setContext(context => ({
-                ...context,
-                uploadId: id
-            }))
-
             console.log("Fetching Analysis")
             AnalysisDisplayService.fetchData(context['uploadId'], setResponse)
-        })
     }, [])
 
     const handleOpacity = (newOpacity, layer) => {
@@ -87,6 +80,9 @@ export default function Analysis(props) {
                     {value.layers.map((layer, index) => { // iterating through all images and displaying them
                         return <img className="layer" key={`image-layer-${index}`} src={layer.image} style={layer.style} />
                     })}
+                    {value.baseImage && value.baseImage.image && (
+                        <img className="baseImage" key="baseImage" src={`${prefixImage}, ${value.baseImage.image}`} />
+                    )}
                 </Box>
                 <Box id="sliders">
                     {value.layers.map((layer, index) => { // iterating through all images and displaying their name and editing functions (slider)

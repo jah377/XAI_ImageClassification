@@ -12,7 +12,7 @@ class ExplainabilityService:
         return self.limeExplainer.get_explanation(input_image)
 
     def get_heatmap(self, input_image):
-        return self.icam(input_image)
+        return self.icam.compute_heatmap(input_image)
     
     def get_bounding_box(self, input_image):
         pass
