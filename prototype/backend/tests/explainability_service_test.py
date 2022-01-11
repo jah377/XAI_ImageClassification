@@ -6,6 +6,9 @@ from services.explainability_service import ExplainabilityService
 from services.prediction_service import PredictionService
 
 import cv2
+
+# run with:
+# python -m tests.explainability_service_test
 class ExplainabilityServiceTest(unittest.TestCase):
 
     decoder = ImageDecoder()

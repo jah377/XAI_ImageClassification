@@ -2,6 +2,8 @@ import unittest
 
 from services.image_decoder import ImageDecoder
 
+# run with:
+# python -m tests.image_loading_test
 class ImageLoadingTest(unittest.TestCase):
   
     def test_loadingImageFromBase64String(self):    
