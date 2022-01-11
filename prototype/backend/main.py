@@ -3,8 +3,6 @@ import os
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import uuid
-import cv2
-import base64
 
 from services.explainability_service import ExplainabilityService
 from services.image_converter import ImageConverter
@@ -43,13 +41,29 @@ def analysis(id):
 
     response["explanations"] = [
         {
+            "name": "Arrows",
+            "image": imgConverter.encodeToBase64(explanationService.get_arrows(heatmap)),
+            "description": "Arrows",
+            "width": WIDTH,
+            "height": HEIGHT,
+            "order": 1
+        },
+        {
+            "name": "Bounding Box",
+            "image": imgConverter.encodeToBase64(explanationService.get_bounding_box(heatmap)),
+            "description": "fjsdkljfklsjdklfsjdklf",
+            "width": WIDTH,
+            "height": HEIGHT,
+            "order": 2
+        },
+        {
             "name": "Heatmap",
             "image": imgConverter.encodeToBase64(heatmap),
             "description": "Heatmap hightlighting which areas lead to the decision of the KL Score",
             "width": WIDTH,
             "height": HEIGHT,
-            "order": 1
-        }
+            "order": 3
+        },
     ]
 
     response["klScore"] = predictionService.predict(img)

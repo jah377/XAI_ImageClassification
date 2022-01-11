@@ -77,12 +77,12 @@ export default function Analysis(props) {
             <h1>Analysis</h1>
             <Box className="analysis-view">
                 <Box id="layers">
+                    {value.baseImage && value.baseImage.image && (
+                        <img className="layer baseImage" key="baseImage" src={`${prefixImage}, ${value.baseImage.image}`} />
+                    )}
                     {value.layers.map((layer, index) => { // iterating through all images and displaying them
                         return <img className="layer" key={`image-layer-${index}`} src={layer.image} style={layer.style} />
                     })}
-                    {value.baseImage && value.baseImage.image && (
-                        <img className="baseImage" key="baseImage" src={`${prefixImage}, ${value.baseImage.image}`} />
-                    )}
                 </Box>
                 <Box id="sliders">
                     {value.layers.map((layer, index) => { // iterating through all images and displaying their name and editing functions (slider)

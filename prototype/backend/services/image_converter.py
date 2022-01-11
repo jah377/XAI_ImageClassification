@@ -9,5 +9,5 @@ class ImageConverter:
         return cv2.imdecode(np.array(byte_data), cv2.IMREAD_COLOR)
 
     def encodeToBase64(self, img):
-        _, imagebytes = cv2.imencode('.jpg', img)
-        return base64.b64encode(imagebytes).decode("utf-8") 
+        _, imagebytes = cv2.imencode('.png', img)
+        return base64.b64encode(imagebytes).decode("ascii") 

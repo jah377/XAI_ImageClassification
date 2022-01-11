@@ -115,8 +115,8 @@ class Lime:
 
 class Outlining:
 
-    def __draw_bounding_box(heatmap, blankImage):
-        image = blankImage
+    def __draw_bounding_box(self, heatmap, blankImg):
+        image = blankImg.copy()
         gray = cv2.cvtColor(heatmap, cv2.COLOR_BGR2GRAY)
         thresh = cv2.threshold(gray, 100, 100, 0)[1]
 
@@ -126,14 +126,11 @@ class Outlining:
             x,y,w,h = cv2.boundingRect(c)
             w *= 0.9
             h *= 0.65
-
             w, h = int(w), int(h)
 
-            rect = cv2.rectangle(image, (x, y), (x + w, y + h), (36,255,12), 2)
-  
-        return image
-        # return {'top_left': (x, y),
-        #         'bottom_right': (x + w, y + h)}
+        rgba = cv2.cvtColor(image, cv2.COLOR_RGB2RGBA)
+        rgba[np.where(np.all(rgba[..., :3] == 255, -1))] = 0
+        return rgba
 
     def __draw_arrows(self, heatmap, blankImg):
         image = blankImg.copy()
@@ -174,25 +171,15 @@ class Outlining:
             image = cv2.arrowedLine(image, start_point4, end_point4,
                                             color, thickness)
 
-        return image
-        # return {'top_left': (start_point, end_point),
-        #         'bottom_right': (start_point2, end_point2),
-        #         'bottom_left': (start_point3, end_point3),
-        #         'top_right': (start_point4, end_point4)}
+        rgba = cv2.cvtColor(image, cv2.COLOR_RGB2RGBA)
+        rgba[np.where(np.all(rgba[..., :3] == 255, -1))] = 0
+        return rgba
 
-    __blankImg = np.zeros((224, 224, 4), dtype=np.uint8)
-        # not 100% sure if working properly
-    # if to_transparent:
-    #     # blank_img = np.zeros([224,224,4],dtype=np.uint8)
-    #     # blank_img.fill(255)
-    #     # blank_img[np.where(np.all(blank_img[..., :3] == 255, -1))] = 0
-    #     blank_img = np.zeros((224, 224, 4), dtype=np.uint8)
-    # else:
-    #     blank_img = np.zeros([224,224,3],dtype=np.uint8)
-    #     blank_img.fill(255)
+    __blankImg = np.zeros([WIDTH,HEIGHT,3],dtype=np.uint8)
+    __blankImg.fill(255)
 
     def drawHeatmapBasedArrows(self, heatmap):
-        return self.__draw_arrows(heatmap, self.__blankImg.copy())
+        return self.__draw_arrows(heatmap, self.__blankImg)
 
     def drawHeatmapBasedBoundingBox(self, heatmap):
-        return self.__draw_bounding_box(heatmap, self.__blankImg.copy())
+        return self.__draw_bounding_box(heatmap, self.__blankImg)
