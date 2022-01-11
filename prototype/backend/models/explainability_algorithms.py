@@ -112,3 +112,87 @@ class Lime:
                                          top_labels=3, hide_color=1, num_samples=500)
         temp_1, mask_1 = explanation.get_image_and_mask(explanation.top_labels[0], positive_only=False, num_features=5, hide_rest=True)
         return mark_boundaries(temp_1, mask_1)
+
+class Outlining:
+
+    def __draw_bounding_box(heatmap, blankImage):
+        image = blankImage
+        gray = cv2.cvtColor(heatmap, cv2.COLOR_BGR2GRAY)
+        thresh = cv2.threshold(gray, 100, 100, 0)[1]
+
+        cnts = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        cnts = cnts[0] if len(cnts) == 2 else cnts[1]
+        for c in cnts:
+            x,y,w,h = cv2.boundingRect(c)
+            w *= 0.9
+            h *= 0.65
+
+            w, h = int(w), int(h)
+
+            rect = cv2.rectangle(image, (x, y), (x + w, y + h), (36,255,12), 2)
+  
+        return image
+        # return {'top_left': (x, y),
+        #         'bottom_right': (x + w, y + h)}
+
+    def __draw_arrows(self, heatmap, blankImg):
+        image = blankImg.copy()
+    
+        gray = cv2.cvtColor(heatmap, cv2.COLOR_BGR2GRAY)
+        thresh = cv2.threshold(gray, 100, 100, 0)[1]
+
+        cnts = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        cnts = cnts[0] if len(cnts) == 2 else cnts[1]
+        for c in cnts:
+            x,y,w,h = cv2.boundingRect(c)
+            w *= 0.9
+            h *= 0.65
+
+            w, h = int(w), int(h)
+
+            color = (252, 3, 3)
+            thickness = 2
+
+            # top left
+            start_point = (x, y)
+            end_point = (x + int(0.25 * w), y + int(0.25 * h))
+            image = cv2.arrowedLine(image, start_point, end_point,
+                                            color, thickness)
+            # bottom right
+            start_point2 = (x + w, y + h)
+            end_point2 = (x + int(0.75 * w), y + int(0.75 * h))
+            image = cv2.arrowedLine(image, start_point2, end_point2,
+                                            color, thickness)
+            # bottom left
+            start_point3 = (x, y + h)
+            end_point3 = (x + int(0.25 * w), y + int(0.75 * h) )
+            image = cv2.arrowedLine(image, start_point3, end_point3,
+                                            color, thickness)
+            # top right
+            start_point4 = (x + w, y)
+            end_point4 = (x + int(0.75 * w), y + int(0.25 * h) )
+            image = cv2.arrowedLine(image, start_point4, end_point4,
+                                            color, thickness)
+
+        return image
+        # return {'top_left': (start_point, end_point),
+        #         'bottom_right': (start_point2, end_point2),
+        #         'bottom_left': (start_point3, end_point3),
+        #         'top_right': (start_point4, end_point4)}
+
+    __blankImg = np.zeros((224, 224, 4), dtype=np.uint8)
+        # not 100% sure if working properly
+    # if to_transparent:
+    #     # blank_img = np.zeros([224,224,4],dtype=np.uint8)
+    #     # blank_img.fill(255)
+    #     # blank_img[np.where(np.all(blank_img[..., :3] == 255, -1))] = 0
+    #     blank_img = np.zeros((224, 224, 4), dtype=np.uint8)
+    # else:
+    #     blank_img = np.zeros([224,224,3],dtype=np.uint8)
+    #     blank_img.fill(255)
+
+    def drawHeatmapBasedArrows(self, heatmap):
+        return self.__draw_arrows(heatmap, self.__blankImg.copy())
+
+    def drawHeatmapBasedBoundingBox(self, heatmap):
+        return self.__draw_bounding_box(heatmap, self.__blankImg.copy())
