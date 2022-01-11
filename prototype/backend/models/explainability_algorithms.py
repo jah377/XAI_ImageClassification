@@ -1,7 +1,12 @@
 from tensorflow.keras.models import Model
 import tensorflow as tf
 import numpy as np
+from lime import lime_image
+from skimage.segmentation import mark_boundaries
+
 import cv2
+
+from constants import *
 
 class GradCAM:
     def __init__(self, model, classIdx=None, layerName=None):
@@ -33,6 +38,8 @@ class GradCAM:
         # to our pre-trained model, (2) the output of the (presumably)
         # final 4D layer in the network, and (3) the output of the
         # softmax activations from the model
+        image_re = image.reshape((1, WIDTH, HEIGHT, 3))
+
         gradModel = Model(
             inputs=[self.model.inputs],
             outputs=[self.model.get_layer(self.layerName).output, self.model.output])
@@ -42,7 +49,7 @@ class GradCAM:
             # cast the image tensor to a float-32 data type, pass the
             # image through the gradient model, and grab the loss
             # associated with the specific class index
-            inputs = tf.cast(image, tf.float32)
+            inputs = tf.cast(image_re, tf.float32)
             (convOutputs, predictions) = gradModel(inputs)
             
             loss = predictions[:, tf.argmax(predictions[0])]
@@ -69,7 +76,7 @@ class GradCAM:
         # grab the spatial dimensions of the input image and resize
         # the output class activation map to match the input image
         # dimensions
-        (w, h) = (image.shape[2], image.shape[1])
+        (w, h) = (image_re.shape[2], image_re.shape[1])
         heatmap = cv2.resize(cam.numpy(), (w, h))
         # normalize the heatmap such that all values lie in the range
         # [0, 1], scale the resulting values to the range [0, 255],
@@ -81,7 +88,7 @@ class GradCAM:
 
         heatmap = cv2.applyColorMap(heatmap, colormap)
         # return the resulting heatmap to the calling function
-        return heatmap
+        return cv2.resize(heatmap, (WIDTH, HEIGHT))
 
     def overlay_heatmap(self, heatmap, image, alpha=0.5,
                         colormap=cv2.COLORMAP_VIRIDIS):
@@ -92,3 +99,16 @@ class GradCAM:
         # return a 2-tuple of the color mapped heatmap and the output,
         # overlaid image
         return (heatmap, output)
+
+class Lime:
+
+    def __init__(self, model):
+        self.explainer = lime_image.LimeImageExplainer()
+        self.model = model
+
+    def get_explanation(self, image):
+        image_re = image.reshape((WIDTH, HEIGHT, 3))
+        explanation = self.explainer.explain_instance(image_re.astype('uint8'), self.model.predict,  
+                                         top_labels=3, hide_color=1, num_samples=500)
+        temp_1, mask_1 = explanation.get_image_and_mask(explanation.top_labels[0], positive_only=False, num_features=5, hide_rest=True)
+        return mark_boundaries(temp_1, mask_1)
