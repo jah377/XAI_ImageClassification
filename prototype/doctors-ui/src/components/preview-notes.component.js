@@ -21,16 +21,12 @@ export default function PreviewImagesUserNotes(props) {
     }
 
     // for dropdown menu
-    const [osteophyte, setOsteophyte] = React.useState('');
     const [openOsteophyte, setOpen_osteophyte] = React.useState(false);
 
-    const [joint, setJoint] = React.useState('');
     const [openJoint, setOpenJoint] = React.useState(false);
 
-    const [sclerosis, setSclerosis] = React.useState('');
     const [openSclerosis, setOpen_sclerosis] = React.useState(false);
 
-    const [deformation, setDeformation] = React.useState('');
     const [openDeformation, setOpen_deformation] = React.useState(false);
 
     return (
