@@ -25,6 +25,7 @@ const emptyXRayNotes = {
 const StepContextProvider = (props) => {
     const [state, setState] = useState({
         step: 0,
+        openModal: false,
         patientNotes: emptyPatientNotes,
         xRayNotes: emptyXRayNotes
     });
