@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import UploadService from "../services/file-upload-service";
+import FileUploadService from "../services/file-upload-service";
 import { StepContext } from "../context/StepContext";
 
 import Stack from '@mui/material/Stack';
@@ -22,21 +22,27 @@ export default function UploadImages(props) {
     });
 
     const selectFile = (event) => {
-        setState(state => ({
-            ...state,
-            currentFile: event.target.files[0],
-            previewImage: URL.createObjectURL(event.target.files[0])
-        }))
+        const reader = new FileReader();
+        reader.readAsDataURL(event.target.files[0]);
+        reader.onerror = error => console.log(error);
+        reader.onload = () => {
+            setState(state => ({
+                ...state,
+                // currentFile: event.target.files[0],
+                previewImage: reader.result
+            }))
+        }
     }
 
     const upload = () => {
-        console.log("TODO upload feature")
-        setContext(context => ({
-            ...context,
-            step: context.step + 1, // incrementing the step counter, we get navigated to the next step "Preview Image"
-            image: state.currentFile,
-            previewImage: state.previewImage
-        }))
+        FileUploadService.upload(state.previewImage, (id) => {
+            setContext(context => ({
+                ...context,
+                uploadId: id,
+                step: context.step + 1, // incrementing the step counter, we get navigated to the next step "Preview Image"
+                previewImage: state.previewImage
+            }))
+        })
     }
 
     const {

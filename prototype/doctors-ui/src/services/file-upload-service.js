@@ -4,14 +4,15 @@ class FileUploadService {
     upload(file, onUploadProgress) {
         let formData = new FormData();
 
-        formData.append("file", file);
+        formData.append("xray", file);
 
-        return http.post("/upload", formData, {
+        return http.post("api/v1/xray/upload", formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
-            onUploadProgress,
-        });
+        }).then(res => { 
+            onUploadProgress(res.data['id'])
+        }); 
     }
 
 }

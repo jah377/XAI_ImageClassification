@@ -1,8 +1,8 @@
 import http from "../http-commons";
 
 class AnalysisDisplayService {
-    fetchData(setResponse) {
-        return http.get("/api/v1/xray/analysis").then(response => {
+    fetchData(id, setResponse) {
+        return http.get(`/api/v1/xray/analysis/${id}`).then(response => {
             setResponse(response.data)
         });
     }
