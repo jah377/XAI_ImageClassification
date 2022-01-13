@@ -16,7 +16,7 @@ export default function LandingPage() {
         transform: 'translate(-50%, -50%)',
         // width: 400,
         bgcolor: 'background.paper',
-        border: '2px solid #000',
+        borderRadius: '25px',
         boxShadow: 24,
         p: 4,
     };
@@ -32,6 +32,7 @@ export default function LandingPage() {
             onClose={handleClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
+            sx={{ borderRadius: '25px' }}
         >
             <Box sx={modalStyle}>
                 <h1>About the project</h1>

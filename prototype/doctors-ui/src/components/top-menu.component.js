@@ -1,11 +1,11 @@
 import { React, useContext, useState } from 'react';
-import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import { StepContext } from "../context/StepContext"
 import { StepIcon, StepLabel } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
 import LandingPage from './landing-page.component';
 
 export default function HorizontalNonLinearStepper(props) {
@@ -32,7 +32,7 @@ export default function HorizontalNonLinearStepper(props) {
     return (
         <div>
             <LandingPage />
-            <Box className="stepper-container">
+            <Stack className="stepper-container">
                 <IconButton color="primary" aria-label="About the app" component="span" onClick={handleOpen}>
                     <InfoIcon />
                 </IconButton>
@@ -47,7 +47,7 @@ export default function HorizontalNonLinearStepper(props) {
                         </Step>
                     ))}
                 </Stepper>
-            </Box>
+            </Stack>
         </div>
 
     );
