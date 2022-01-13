@@ -24,6 +24,8 @@ export default function FileUploadUserNotes(props) {
     return (
         <div>
             <Stack direction="column" alignItems="left" justifyContent="space-between" spacing={1}>
+                {/* weak attempt to align notes with upload box */}
+                <h1 />
 
                 {/* appointment date */}
                 <LocalizationProvider fullWidth dateAdapter={AdapterDateFns}>

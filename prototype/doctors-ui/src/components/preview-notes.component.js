@@ -22,12 +22,28 @@ export default function PreviewImagesUserNotes(props) {
 
     // for dropdown menu
     const [openOsteophyte, setOpen_osteophyte] = React.useState(false);
-
     const [openJoint, setOpenJoint] = React.useState(false);
-
     const [openSclerosis, setOpen_sclerosis] = React.useState(false);
-
     const [openDeformation, setOpen_deformation] = React.useState(false);
+
+    // for KL Score
+    // composite calc. found in Wick 2013 (original defined in Kellgren 1957)
+    function KL(osteophyte, jointSpace, sclerosis, deformation) {
+
+        var total = osteophyte + jointSpace + sclerosis + deformation
+
+        if (total == 10) {
+            return 4;
+        } else if (total >= 5) {
+            return 3;
+        } else if (total >= 3) {
+            return 2;
+        } else if (total >= 1) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 
     return (
         <div>
@@ -101,19 +117,37 @@ export default function PreviewImagesUserNotes(props) {
                     </Select>
                 </FormControl>
 
+                {/* composite KL score calculated from user input */}
+                <TextField
+                    className="preview-notes"
+                    label="Calculated KL Score"
+                    varient="outlined"
+                    fullWidth
+                    value={KL(
+                        context.xRayNotes.osteophyte,
+                        context.xRayNotes.jointSpace,
+                        context.xRayNotes.sclerosis,
+                        context.xRayNotes.deformation)}
+                    onChange={(event) => { setXRayNotesOnKeyToValue("KL", event.target.value) }}
+                />
+
                 {/* physician notes from preview page */}
                 <form noValidate autoComplete='off'>
                     <TextField
-                        className="preview-notes"
-                        label="Enter XRay Notes"
+                        className="upload-notes"
+                        label="Add XRay Notes"
                         varient="outlined"
                         multiline
-                        fullWidth
                         rows={10}
+                        fullWidth
                         value={context.xRayNotes.notes}
                         onChange={(event) => { setXRayNotesOnKeyToValue("notes", event.target.value) }}
                     />
                 </form>
+
+
+
+
             </Stack>
 
         </div>

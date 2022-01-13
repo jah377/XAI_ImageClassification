@@ -17,7 +17,8 @@ const emptyXRayNotes = {
     "osteophyte": 0,
     "jointSpace": 0,
     "sclerosis": 0,
-    "deformation": 0
+    "deformation": 0,
+    "KL": 0
 }
 
 const StepContextProvider = (props) => {
