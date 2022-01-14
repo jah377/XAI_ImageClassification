@@ -153,12 +153,16 @@ export default function Analysis(props) {
                                     </Select>
                                 </FormControl>
                                 <Stack className="editing-functions" flexDirection="row" alignItems="center">
-                                    <Checkbox
-                                        onChange={(_, checked) => toggleVisibility(checked, value.layers[value.selectedLayerIndex])}
-                                        checked={value.layers[value.selectedLayerIndex].active}
-                                        icon={<VisibilityOffIcon />}
-                                        checkedIcon={<VisibilityIcon />} />
+                                    <Tooltip title="Hide/Show layer">
+                                        <Checkbox
+                                            onChange={(_, checked) => toggleVisibility(checked, value.layers[value.selectedLayerIndex])}
+                                            checked={value.layers[value.selectedLayerIndex].active}
+                                            icon={<VisibilityOffIcon />}
+                                            checkedIcon={<VisibilityIcon />} />
+                                    </Tooltip>
+                                    {/* <Tooltip title="Change layer opacity"> */}
                                     <Slider
+                                        aria-labelledby="input-slider"
                                         className="slider"
                                         onChange={(_, opacity) => { handleOpacity(opacity, value.layers[value.selectedLayerIndex]) }} // change-handler (updating and rerendering images with new opacity)
                                         min={0}
@@ -167,6 +171,7 @@ export default function Analysis(props) {
                                         value={value.layers[value.selectedLayerIndex].style.opacity} // the value (opacity) we are manipulation with this slider
                                         valueLabelDisplay="auto"
                                     />
+                                    {/* </Tooltip> */}
                                 </Stack>
                             </Box>
                         </Stack>
