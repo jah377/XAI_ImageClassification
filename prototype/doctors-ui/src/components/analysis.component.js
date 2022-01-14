@@ -37,10 +37,10 @@ export default function Analysis(props) {
             }
         })
 
-         const baseImage = {
+        const baseImage = {
             ...response.baseImage,
             "style": {
-                "width": response.baseImage.width * 1.5             
+                "width": response.baseImage.width * 1.5
             }
         }
 
@@ -52,7 +52,7 @@ export default function Analysis(props) {
             "klScore": response.klScore,
             "loading": false
         })
-        setContext({...context, value})
+        setContext({ ...context, value })
     }
 
     const [context, setContext] = useContext(StepContext);
@@ -109,13 +109,11 @@ export default function Analysis(props) {
                     <Skeleton animation="wave" variant="rectangular" width={228} height={75} />
                 </Stack>
             )}
-            {!value.loading && (
+            {!value.loading && value.baseImage && (
                 <Stack className="analysis-view" justifyContent="column" alignItems="center">
                     <Box id="image-view">
                         <Box width={value.baseImage.width * 1.5} height={value.baseImage.height * 1.5} />
-                        {value.baseImage && value.baseImage.image && (
-                            <img className="layer baseImage" key="baseImage" src={`${prefixImage}, ${value.baseImage.image}`} style={value.baseImage.style}/>
-                        )}
+                        <img className="layer baseImage" key="baseImage" src={`${prefixImage}, ${value.baseImage.image}`} style={value.baseImage.style} />
                         {value.layers.length > 0 && value.layers[value.selectedLayerIndex].description && value.layers[value.selectedLayerIndex].description !== "" &&
                             <Tooltip title={value.layers[value.selectedLayerIndex].description}>
                                 <img className="layer" src={value.layers[value.selectedLayerIndex].image} style={value.layers[value.selectedLayerIndex].style} />
