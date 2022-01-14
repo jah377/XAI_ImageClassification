@@ -57,8 +57,12 @@ html,
   left: 0;
 }
 
-#sliders {
+#editor {
   margin-top: 300px;
+}
+
+.editor-child {
+  padding: 5%;
 }
 
 .editing-container {
@@ -72,13 +76,8 @@ html,
   padding: 2%;
 }
 
-.editing-functions {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
 .klScoreCard {
+  min-width: 150px;
   padding: 5%;
   text-align: center;
 }
