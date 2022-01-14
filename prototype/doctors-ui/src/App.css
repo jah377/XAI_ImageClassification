@@ -42,12 +42,21 @@ html,
 /* ANALYSIS COMPONENT */
 
 .analysis-view {
+  /* width: 100%; */
   display: flex;
   flex-direction: row;
   /* justify-content: ; */
 }
 
-#layers {
+div {
+  /* width: 100%; */
+}
+
+.analysis-title {
+  text-align: center;
+}
+
+#image-view {
   position: relative;
 }
 
@@ -57,8 +66,12 @@ html,
   left: 0;
 }
 
-#sliders {
-  margin-top: 300px;
+#editor {
+  padding-top: 5%;
+}
+
+.editor-child {
+  padding: 5%;
 }
 
 .editing-container {
@@ -72,8 +85,8 @@ html,
   padding: 2%;
 }
 
-.editing-functions {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+.klScoreCard {
+  min-width: 150px;
+  padding: 5%;
+  text-align: center;
 }
