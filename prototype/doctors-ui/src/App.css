@@ -77,3 +77,8 @@ html,
   flex-direction: row;
   align-items: center;
 }
+
+.klScoreCard {
+  padding: 5%;
+  text-align: center;
+}
