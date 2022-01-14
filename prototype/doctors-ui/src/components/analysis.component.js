@@ -15,14 +15,13 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { Card, Tooltip } from "@mui/material";
+import { Paper, Tooltip } from "@mui/material";
 
 export default function Analysis(props) {
 
-    let prefixImage = "data:image/png;base64" // necessary to decode the base64 string and display an actual image
+    const prefixImage = "data:image/png;base64" // necessary to decode the base64 string and display an actual image
 
-
-    let setResponse = (response) => {
+    const setResponse = (response) => {
         let layers = response.explanations
         // enhancing the images with information needed in the frontend (active, style for opacity)
         layers = layers.map(layer => {
@@ -31,20 +30,29 @@ export default function Analysis(props) {
                 "active": true,
                 "style": { // base style for layered images
                     "opacity": layer.name === "Heatmap" ? 0.3 : 1.0,
-                    "display": "block"
+                    "display": "block",
+                    "width": layer.width * 1.5
                 },
                 "image": `${prefixImage}, ${layer.image}`
             }
         })
 
+         const baseImage = {
+            ...response.baseImage,
+            "style": {
+                "width": response.baseImage.width * 1.5             
+            }
+        }
+
         setValue({
             ...value,
             "layers": layers,
             "selectedLayerIndex": 0,
-            "baseImage": response.baseImage,
+            "baseImage": baseImage,
             "klScore": response.klScore,
             "loading": false
         })
+        setContext({...context, value})
     }
 
     const [context, setContext] = useContext(StepContext);
@@ -92,7 +100,7 @@ export default function Analysis(props) {
 
     return (
         <div>
-            <h1>Analysis</h1>
+            <h1 className="analysis-title">Analysis</h1>
             {value.loading && (
                 <Stack spacing={1}>
                     <Skeleton animation="wave" variant="rectangular" width={224} height={224} />
@@ -102,10 +110,11 @@ export default function Analysis(props) {
                 </Stack>
             )}
             {!value.loading && (
-                <Box className="analysis-view">
-                    <Box id="layers">
+                <Stack className="analysis-view" justifyContent="column" alignItems="center">
+                    <Box id="image-view">
+                        <Box width={value.baseImage.width * 1.5} height={value.baseImage.height * 1.5} />
                         {value.baseImage && value.baseImage.image && (
-                            <img className="layer baseImage" key="baseImage" src={`${prefixImage}, ${value.baseImage.image}`} />
+                            <img className="layer baseImage" key="baseImage" src={`${prefixImage}, ${value.baseImage.image}`} style={value.baseImage.style}/>
                         )}
                         {value.layers.length > 0 && value.layers[value.selectedLayerIndex].description && value.layers[value.selectedLayerIndex].description !== "" &&
                             <Tooltip title={value.layers[value.selectedLayerIndex].description}>
@@ -121,13 +130,13 @@ export default function Analysis(props) {
                             <Tooltip title={
                                 <React.Fragment>
                                     <Typography color="inherit">Predicted KL Score</Typography>
-                                    This is the KL score that the smart assistant calculated when assessing the XRay image
+                                    The KL score that the smart assistant calculated when assessing the XRay image
                                 </React.Fragment>
                             }>
-                                <Card className="klScoreCard editor-child">
+                                <Paper className="klScoreCard editor-child">
                                     <h2>KL-Score</h2>
                                     <h2>{value.klScore}</h2>
-                                </Card>
+                                </Paper>
                             </Tooltip>
                             <Box className="editor-child">
                                 <FormControl sx={{ width: 250 }}>
@@ -164,7 +173,7 @@ export default function Analysis(props) {
                             </Box>
                         </Stack>
                     }
-                </Box >
+                </Stack >
             )}
         </div>
     );
