@@ -4,6 +4,17 @@ import { TextField } from "@mui/material";
 import Stack from '@mui/material/Stack';
 import { Select, MenuItem, FormControl, InputLabel } from "@material-ui/core";
 
+
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import { styled } from '@mui/material/styles';
+import Collapse from '@mui/material/Collapse';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import IconButton from '@mui/material/IconButton';
+
 // YOUTUBE: https://www.youtube.com/watch?v=sTdt2cJS2dg
 
 export default function PreviewImagesUserNotes(props) {
@@ -45,6 +56,36 @@ export default function PreviewImagesUserNotes(props) {
         }
     }
 
+    // for KL display card
+    const bull = (
+        <Box
+            component="span"
+            sx={{
+                display: 'inline-block',
+                mx: '2px',
+                transform: 'scale(0.8)'
+            }}
+        >
+        </Box>
+    );
+
+    const ExpandMore = styled((props) => {
+        const { expand, ...other } = props;
+        return <IconButton {...other} />;
+    })(({ theme, expand }) => ({
+        transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+        marginLeft: 'auto',
+        transition: theme.transitions.create('transform', {
+            duration: theme.transitions.duration.shortest,
+        }),
+    }));
+
+    const [expanded, setExpanded] = React.useState(false);
+
+    const handleExpandClick = () => {
+        setExpanded(!expanded);
+    };
+
     return (
         <div>
             <Stack direction="column" alignItems="left" justifyContent="space-between" spacing={1}>
@@ -61,9 +102,9 @@ export default function PreviewImagesUserNotes(props) {
                         value={context.xRayNotes.osteophyte}
                         onChange={(event) => { setXRayNotesOnKeyToValue("osteophyte", event.target.value) }}
                     >
-                        <MenuItem value={0}>None</MenuItem>
-                        <MenuItem value={1}>Definite</MenuItem>
-                        <MenuItem value={2}>Large</MenuItem >
+                        <MenuItem value={0}>0 - None</MenuItem>
+                        <MenuItem value={1}>1 - Definite</MenuItem>
+                        <MenuItem value={2}>2 - Large</MenuItem >
                     </Select>
                 </FormControl>
 
@@ -77,10 +118,10 @@ export default function PreviewImagesUserNotes(props) {
                         value={context.xRayNotes.jointSpace}
                         onChange={(event) => { setXRayNotesOnKeyToValue("jointSpace", event.target.value) }}
                     >
-                        <MenuItem value={0}>Normal</MenuItem>
-                        <MenuItem value={1}>Narrowing</MenuItem>
-                        <MenuItem value={2}>Advanced Narrowing</MenuItem >
-                        <MenuItem value={3}>Gone</MenuItem >
+                        <MenuItem value={0}>0 - Normal</MenuItem>
+                        <MenuItem value={1}>1 - Narrowing</MenuItem>
+                        <MenuItem value={2}>2 - Advanced Narrowing</MenuItem >
+                        <MenuItem value={3}>3 - Gone</MenuItem >
                     </Select>
                 </FormControl>
 
@@ -94,10 +135,10 @@ export default function PreviewImagesUserNotes(props) {
                         value={context.xRayNotes.sclerosis}
                         onChange={(event) => { setXRayNotesOnKeyToValue("sclerosis", event.target.value) }}
                     >
-                        <MenuItem value={0}>None</MenuItem>
-                        <MenuItem value={1}>Discrete</MenuItem>
-                        <MenuItem value={2}>Discrete Sclerosis w/ Cyst</MenuItem >
-                        <MenuItem value={3}>Severe Sclerosis w/ Cyst</MenuItem >
+                        <MenuItem value={0}>0 - None</MenuItem>
+                        <MenuItem value={1}>1 - Discrete</MenuItem>
+                        <MenuItem value={2}>2 - Discrete Sclerosis w/ Cyst</MenuItem >
+                        <MenuItem value={3}>3 - Severe Sclerosis w/ Cyst</MenuItem >
                     </Select>
                 </FormControl>
 
@@ -111,14 +152,14 @@ export default function PreviewImagesUserNotes(props) {
                         value={context.xRayNotes.deformation}
                         onChange={(event) => { setXRayNotesOnKeyToValue("deformation", event.target.value) }}
                     >
-                        <MenuItem value={0}>None</MenuItem>
-                        <MenuItem value={1}>Discrete</MenuItem>
-                        <MenuItem value={2}>Strong</MenuItem >
+                        <MenuItem value={0}>0 - None</MenuItem>
+                        <MenuItem value={1}>1 - Discrete</MenuItem>
+                        <MenuItem value={2}>2 - Strong</MenuItem >
                     </Select>
                 </FormControl>
 
                 {/* composite KL score calculated from user input */}
-                <TextField
+                {/* <TextField
                     className="preview-notes"
                     label="Calculated KL Score"
                     varient="outlined"
@@ -129,7 +170,79 @@ export default function PreviewImagesUserNotes(props) {
                         context.xRayNotes.sclerosis,
                         context.xRayNotes.deformation)}
                     onChange={(event) => { setXRayNotesOnKeyToValue("KL", event.target.value) }}
-                />
+                /> */}
+
+                <Box>
+                    <Card sx={{ maxWidth: 500 }} variant="outlined">{
+                        <React.Fragment>
+                            <CardContent>
+                                <Typography sx={{ fontSize: 14 }} align='center' color="text.secondary" gutterBottom>
+                                    Calculated Kellgren-Lawrence Score
+                                </Typography>
+                                <Typography variant="h5" component="div" align='center'>
+                                    {KL(
+                                        context.xRayNotes.osteophyte,
+                                        context.xRayNotes.jointSpace,
+                                        context.xRayNotes.sclerosis,
+                                        context.xRayNotes.deformation)}
+                                </Typography>
+
+                                {/* expand for more details */}
+                            </CardContent>
+                            <CardActions disableSpacing>
+                                <ExpandMore
+                                    expand={expanded}
+                                    onClick={handleExpandClick}
+                                    aria-expanded={expanded}
+                                    aria-label="show more"
+                                >
+                                    <ExpandMoreIcon />
+                                </ExpandMore>
+                            </CardActions>
+
+                            {/* calculation details */}
+                            <Collapse in={expanded} timeout="auto" unmountOnExit>
+                                <CardContent>
+                                    <Typography variant="h6" component="div">
+                                        Definition:
+                                    </Typography>
+                                    <Typography paragraph sx={{ fontSize: 14, marginLeft: 2 }}>
+                                        Kellgren-Lawrence method evaluates severity of knee OA as a sum score according to measurements of joint space, surface deformation, sclerosis, and presence of osteophytes
+                                    </Typography>
+
+                                    {/* calculations */}
+                                    <Typography variant="h6" component="div">
+                                        Calculation:
+                                    </Typography>
+                                    <Typography sx={{ fontSize: 14, marginLeft: 2 }} display="block">
+                                        Grade 0 = 0 points;
+                                    </Typography>
+                                    <Typography sx={{ fontSize: 14, marginLeft: 2 }} display="block">
+                                        Grade 1 = 1-2 points;
+                                    </Typography>
+                                    <Typography sx={{ fontSize: 14, marginLeft: 2 }} display="block">
+                                        Grade 2 = 3-4 points
+                                    </Typography>
+                                    <Typography sx={{ fontSize: 14, marginLeft: 2 }} display="block">
+                                        Grade 3 = 5-9 points;
+                                    </Typography>
+                                    <Typography paragraph sx={{ fontSize: 14, marginLeft: 2 }} display="block">
+                                        Grade 4 = 10 points
+                                    </Typography>
+
+                                    {/* citations */}
+                                    <Typography sx={{ fontSize: 10, fontStyle: 'italic' }}>
+                                        Wick et al. Clinical Imaging Assessment of Knee Osteoarthritis in the Elderly. 2014.
+                                    </Typography>
+                                    <Typography sx={{ fontSize: 10, fontStyle: 'italic' }}>
+                                        Kellgren & Lawrence. Radiological Assessment of Osteoarthrosis. 1957.
+                                    </Typography>
+                                </CardContent>
+                            </Collapse>
+                        </React.Fragment>
+                    }
+                    </Card>
+                </Box>
 
                 {/* physician notes from preview page */}
                 <form noValidate autoComplete='off'>
@@ -150,6 +263,6 @@ export default function PreviewImagesUserNotes(props) {
 
             </Stack>
 
-        </div>
+        </div >
     );
 }
