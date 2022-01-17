@@ -28,6 +28,16 @@ html,
   align-items: flex-start;
 }
 
+.upload {
+  max-width: 400px;
+}
+
+.upload-container {
+  border: 2px dashed #AAAa;
+  height: 400px;
+  width: 400px;
+}
+
 .preview {
   max-width: 400px;
 }
@@ -89,4 +99,54 @@ div {
   min-width: 150px;
   padding: 5%;
   text-align: center;
+}
+.upload-notes {
+  margin-top: 20;
+  margin-bottom: 20;
+  display: 'block';
+}
+
+.preview-notes {
+  margin-top: 20;
+  margin-bottom: 20;
+  display: 'block';
+}
+
+.menu-input{
+  /* margin-bottom: 25px; */
+}
+
+
+/* ANALYSIS COMPONENT */
+
+.analysis-view {
+  display: flex;
+  flex-direction: row;
+  /* justify-content: ; */
+}
+
+#layers {
+  position: relative;
+}
+
+.layer{
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#sliders {
+  margin-top: 300px;
+}
+
+.editing-container {
+  margin: 5%;
+  padding: 2% 20% 2% 5%;
+  width: 200%;
+}
+
+.editing-functions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
