@@ -150,3 +150,15 @@ div {
   flex-direction: row;
   align-items: center;
 }
+
+/* REPORT COMPONENT */
+
+.reportContainer {
+  width: 100%;
+  height: 100vh !important;
+}
+
+.reportPreview {
+  width: 100%;
+  height: inherit;
+}

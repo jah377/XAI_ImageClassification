@@ -9,6 +9,7 @@ import HorizontalNonLinearStepper from "./components/top-menu.component";
 
 import { StepContextProvider } from "./context/StepContext";
 import StagesOverview from "./components/stages-overview.component"
+import Report from "./components/report.component";
 
 function App() {
 
@@ -16,7 +17,7 @@ function App() {
     <UploadImages />,
     <PreviewImages/>,
     <Analysis/>,
-    <h1>TODO Report</h1>
+    <Report/>
   ]
 
   const stageNames = [
