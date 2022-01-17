@@ -17,6 +17,12 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { Paper, Tooltip } from "@mui/material";
 
+import AnalysisUserNotes from "./analysis-notes.component";
+
+
+
+
+
 export default function Analysis(props) {
 
     const prefixImage = "data:image/png;base64" // necessary to decode the base64 string and display an actual image
@@ -101,83 +107,90 @@ export default function Analysis(props) {
     return (
         <div>
             <h1 className="analysis-title">Analysis</h1>
-            {value.loading && (
-                <Stack spacing={1}>
-                    <Skeleton animation="wave" variant="rectangular" width={224} height={224} />
-                    <Skeleton animation="wave" variant="rectangular" width={228} height={75} />
-                    <Skeleton animation="wave" variant="rectangular" width={228} height={75} />
-                    <Skeleton animation="wave" variant="rectangular" width={228} height={75} />
-                </Stack>
-            )}
-            {!value.loading && value.baseImage && (
-                <Stack className="analysis-view" justifyContent="column" alignItems="center">
-                    <Box id="image-view">
-                        <Box width={value.baseImage.width * 1.5} height={value.baseImage.height * 1.5} />
-                        <img className="layer baseImage" key="baseImage" src={`${prefixImage}, ${value.baseImage.image}`} style={value.baseImage.style} />
-                        {value.layers.length > 0 && value.layers[value.selectedLayerIndex].description && value.layers[value.selectedLayerIndex].description !== "" &&
-                            <Tooltip title={value.layers[value.selectedLayerIndex].description}>
+
+            <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
+
+                {value.loading && (
+                    <Stack spacing={1}>
+                        <Skeleton animation="wave" variant="rectangular" width={224} height={224} />
+                        <Skeleton animation="wave" variant="rectangular" width={228} height={75} />
+                        <Skeleton animation="wave" variant="rectangular" width={228} height={75} />
+                        <Skeleton animation="wave" variant="rectangular" width={228} height={75} />
+                    </Stack>
+                )}
+                {!value.loading && value.baseImage && (
+                    <Stack className="analysis-view" justifyContent="column" alignItems="center">
+                        <Box id="image-view">
+                            <Box width={value.baseImage.width * 1.5} height={value.baseImage.height * 1.5} />
+                            <img className="layer baseImage" key="baseImage" src={`${prefixImage}, ${value.baseImage.image}`} style={value.baseImage.style} />
+                            {value.layers.length > 0 && value.layers[value.selectedLayerIndex].description && value.layers[value.selectedLayerIndex].description !== "" &&
+                                <Tooltip title={value.layers[value.selectedLayerIndex].description}>
+                                    <img className="layer" src={value.layers[value.selectedLayerIndex].image} style={value.layers[value.selectedLayerIndex].style} />
+                                </Tooltip>
+                            }
+                            {value.layers.length > 0 && (!value.layers[value.selectedLayerIndex].description || value.layers[value.selectedLayerIndex].description === "") &&
                                 <img className="layer" src={value.layers[value.selectedLayerIndex].image} style={value.layers[value.selectedLayerIndex].style} />
-                            </Tooltip>
+                            }
+                        </Box>
+                        {value.layers.length > 0 &&
+                            <Stack id="editor" flexDirection="row" justifyContent="space-around" alignItems="center">
+                                <Tooltip title={
+                                    <React.Fragment>
+                                        <Typography color="inherit">Predicted KL Score</Typography>
+                                        The KL score that the smart assistant calculated when assessing the XRay image
+                                    </React.Fragment>
+                                }>
+                                    <Paper className="klScoreCard editor-child">
+                                        <h2>KL-Score</h2>
+                                        <h2>{value.klScore}</h2>
+                                    </Paper>
+                                </Tooltip>
+                                <Box className="editor-child">
+                                    <FormControl sx={{ width: 250 }}>
+                                        <InputLabel id="explanation-select-label">Explanation</InputLabel>
+                                        <Select
+                                            labelId="explanation-select-label"
+                                            id="explanation-select"
+                                            value={value.selectedLayerIndex}
+                                            label="Explanations"
+                                            onChange={selectExplanationLayer}
+                                        >
+                                            {value.layers.map((layer, index) => {
+                                                return <MenuItem key={`explanation-select-${index}`} value={index}> {layer.name} </MenuItem>
+                                            })
+                                            }
+                                        </Select>
+                                    </FormControl>
+                                    <Stack className="editing-functions" flexDirection="row" alignItems="center">
+                                        <Tooltip title="Hide/Show layer">
+                                            <Checkbox
+                                                onChange={(_, checked) => toggleVisibility(checked, value.layers[value.selectedLayerIndex])}
+                                                checked={value.layers[value.selectedLayerIndex].active}
+                                                icon={<VisibilityOffIcon />}
+                                                checkedIcon={<VisibilityIcon />} />
+                                        </Tooltip>
+                                        {/* <Tooltip title="Change layer opacity"> */}
+                                        <Slider
+                                            aria-labelledby="input-slider"
+                                            className="slider"
+                                            onChange={(_, opacity) => { handleOpacity(opacity, value.layers[value.selectedLayerIndex]) }} // change-handler (updating and rerendering images with new opacity)
+                                            min={0}
+                                            step={0.01}
+                                            max={1}
+                                            value={value.layers[value.selectedLayerIndex].style.opacity} // the value (opacity) we are manipulation with this slider
+                                            valueLabelDisplay="auto"
+                                        />
+                                        {/* </Tooltip> */}
+                                    </Stack>
+                                </Box>
+                            </Stack>
                         }
-                        {value.layers.length > 0 && (!value.layers[value.selectedLayerIndex].description || value.layers[value.selectedLayerIndex].description === "") &&
-                            <img className="layer" src={value.layers[value.selectedLayerIndex].image} style={value.layers[value.selectedLayerIndex].style} />
-                        }
-                    </Box>
-                    {value.layers.length > 0 &&
-                        <Stack id="editor" flexDirection="row" justifyContent="space-around" alignItems="center">
-                            <Tooltip title={
-                                <React.Fragment>
-                                    <Typography color="inherit">Predicted KL Score</Typography>
-                                    The KL score that the smart assistant calculated when assessing the XRay image
-                                </React.Fragment>
-                            }>
-                                <Paper className="klScoreCard editor-child">
-                                    <h2>KL-Score</h2>
-                                    <h2>{value.klScore}</h2>
-                                </Paper>
-                            </Tooltip>
-                            <Box className="editor-child">
-                                <FormControl sx={{ width: 250 }}>
-                                    <InputLabel id="explanation-select-label">Explanation</InputLabel>
-                                    <Select
-                                        labelId="explanation-select-label"
-                                        id="explanation-select"
-                                        value={value.selectedLayerIndex}
-                                        label="Explanations"
-                                        onChange={selectExplanationLayer}
-                                    >
-                                        {value.layers.map((layer, index) => {
-                                            return <MenuItem key={`explanation-select-${index}`} value={index}> {layer.name} </MenuItem>
-                                        })
-                                        }
-                                    </Select>
-                                </FormControl>
-                                <Stack className="editing-functions" flexDirection="row" alignItems="center">
-                                    <Tooltip title="Hide/Show layer">
-                                        <Checkbox
-                                            onChange={(_, checked) => toggleVisibility(checked, value.layers[value.selectedLayerIndex])}
-                                            checked={value.layers[value.selectedLayerIndex].active}
-                                            icon={<VisibilityOffIcon />}
-                                            checkedIcon={<VisibilityIcon />} />
-                                    </Tooltip>
-                                    {/* <Tooltip title="Change layer opacity"> */}
-                                    <Slider
-                                        aria-labelledby="input-slider"
-                                        className="slider"
-                                        onChange={(_, opacity) => { handleOpacity(opacity, value.layers[value.selectedLayerIndex]) }} // change-handler (updating and rerendering images with new opacity)
-                                        min={0}
-                                        step={0.01}
-                                        max={1}
-                                        value={value.layers[value.selectedLayerIndex].style.opacity} // the value (opacity) we are manipulation with this slider
-                                        valueLabelDisplay="auto"
-                                    />
-                                    {/* </Tooltip> */}
-                                </Stack>
-                            </Box>
-                        </Stack>
-                    }
-                </Stack >
-            )}
+                    </Stack >
+                )}
+
+                <AnalysisUserNotes />
+
+            </Stack >
         </div>
     );
 }

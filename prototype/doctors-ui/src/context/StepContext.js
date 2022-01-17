@@ -14,6 +14,7 @@ const emptyPatientNotes = {
 
 const emptyXRayNotes = {
     "notes": "",
+    "analysis_notes": "",
     "osteophyte": 0,
     "jointSpace": 0,
     "sclerosis": 0,
