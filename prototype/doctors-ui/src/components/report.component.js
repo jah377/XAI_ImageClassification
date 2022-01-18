@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import Button from "@mui/material";
+import { Button} from "@mui/material";
 
 import PDFReport from "./pdf-report.component";
 import SourceCodeProRegular from "../fonts/Source_Code_Pro/SourceCodePro-Regular.ttf"
