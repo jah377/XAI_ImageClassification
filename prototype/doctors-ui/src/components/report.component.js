@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { Button, Card } from "@mui/material";
 import PDFReport from "./pdf-report.component";
 import SourceCodeProRegular from "../fonts/Source_Code_Pro/SourceCodePro-Regular.ttf"
+import { StepContext } from "../context/StepContext";
 
 import {
     StyleSheet,
@@ -12,6 +13,8 @@ import {
 } from "@react-pdf/renderer";
 
 export default function Report() {
+
+    const [context] = React.useContext(StepContext)
 
     const styles = StyleSheet.create({
         viewer: {
@@ -30,7 +33,7 @@ export default function Report() {
 
     const pdfStyles = StyleSheet.create({
         page: {
-            fontFamily: "SourceCodePro",
+            // fontFamily: "SourceCodePro",
             // fontWeight: "normal",
             // fontStyle: "normal",
             fontSize: 14,
@@ -42,6 +45,20 @@ export default function Report() {
         description: {
             fontSize: 9,
             color: "grey"
+        },
+
+        header1: {
+            fontSize: "20",
+            textAlign: "left",
+            paddingTop: "5%",
+            paddingLeft: "5%"
+        },
+
+        header2: {
+            fontSize: "15",
+            textAlign: "left",
+            paddingTop: "5%",
+            paddingLeft: "5%"
         },
 
         headerDescription: {
@@ -61,11 +78,13 @@ export default function Report() {
         },
 
         patientInformation: {
-            padding: "5%",
+            paddingVertical: "2%",
+            // paddingHorizontal: "5%",
             textAlign: "justify"
         },
 
         doctorsEvaluation: {
+            padding: "5%",
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center"
@@ -107,11 +126,7 @@ export default function Report() {
         },
 
         smartAssistantPage: {
-            header: {
-                paddingTop: "3%",
-                paddingLeft: "5%",
-                fontSize: "20"
-            }
+            padding: "5%"
         },
 
         klScoreContainer: {
@@ -120,9 +135,18 @@ export default function Report() {
             alignItems: "center"
         },
 
-        baseImage: {
-            width: 224,
-            height: 224
+        klScoresDistribution: {
+            flexDirection: "row",
+            justifyContent: "space-around",
+            alignItems:"stretch"
+        },
+
+        klScores: {
+            flexDirection: "column",
+            justifyContent: "space-around",
+            padding: "2%",
+            borderRadius: "5px",
+            border: "1px solid #A7A7A7;"
         },
 
         images: {
@@ -131,14 +155,6 @@ export default function Report() {
             justifyContent: "space-around"
         },
 
-        overlay: {
-            width: 224,
-            height: 224,
-            position: "absolute",
-            left: 0,
-            top: 0,
-            opacity: 0.3
-        },
     })
 
     useEffect(() => {
@@ -160,19 +176,22 @@ export default function Report() {
         "medicalNotes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     }
 
+    const report = <PDFReport styles={pdfStyles} content={context} />
+
+
     return (
         <div className="reportContainer">
             <h1>Report Preview</h1>
             <Button variant="contained">Go back</Button>
             <Button variant="contained">
-                <PDFDownloadLink style={styles.downloadButton} document={<PDFReport styles={pdfStyles} />} fileName={`${patientNotes.appointmentDate}_${patientNotes.lastName}_${patientNotes.firstName}`}>
+                <PDFDownloadLink style={styles.downloadButton} document={report} fileName={`${patientNotes.appointmentDate}_${patientNotes.lastName}_${patientNotes.firstName}`}>
                     {_ => "Download Report"}
                 </PDFDownloadLink>
             </Button>
             <div>
                 {/* <PDFDownloadLink document={<PDFReport />} fileName={`${patientNotes.appointmentDate}_${patientNotes.lastName}_${patientNotes.firstName}`} /> */}
                 <PDFViewer showToolbar={true} style={styles.viewer}>
-                    <PDFReport styles={pdfStyles} />
+                    {report}
                 </PDFViewer>
             </div>
         </div>
