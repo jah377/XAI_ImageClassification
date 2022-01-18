@@ -56,10 +56,10 @@ export default function Report() {
         },
 
         header2: {
-            fontSize: "15",
+            fontSize: "18",
             textAlign: "left",
             paddingTop: "5%",
-            paddingLeft: "5%"
+            // paddingLeft: "5%"
         },
 
         headerDescription: {
