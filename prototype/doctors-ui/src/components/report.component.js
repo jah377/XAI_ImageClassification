@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import { Button} from "@mui/material";
+import { Button, Stack} from "@mui/material";
 
 import PDFReport from "./pdf-report.component";
 import SourceCodeProRegular from "../fonts/Source_Code_Pro/SourceCodePro-Regular.ttf"
@@ -181,17 +181,18 @@ export default function Report() {
 
     return (
         <div className="reportContainer">
-            <h1>Report Preview</h1>
-            <Button variant="contained">Go back</Button>
-            <PDFDownloadLink style={styles.downloadButton} document={report} fileName={`${patientNotes.appointmentDate}_${patientNotes.lastName}_${patientNotes.firstName}`}>
-                {({ blob, url, loading, error }) => <Button variant="contained">Download Report</Button>}
-            </PDFDownloadLink>
-            <div>
-                {/* <PDFDownloadLink document={<PDFReport />} fileName={`${patientNotes.appointmentDate}_${patientNotes.lastName}_${patientNotes.firstName}`} /> */}
+            {/* <h1>Report Preview</h1> */}
+            <Stack className="report" flexDirection="row" alignItems="center" justifyContent="space-between">
+                {/* TODO make this a button group and go back to each individual step */}
+                <Button variant="contained">Go back</Button>
+                <h1>Preview</h1>
+                <PDFDownloadLink style={styles.downloadButton} document={report} fileName={`${patientNotes.appointmentDate}_${patientNotes.lastName}_${patientNotes.firstName}`}>
+                    {({ blob, url, loading, error }) => <Button variant="contained">Download Report</Button>}
+                </PDFDownloadLink>
+            </Stack>
                 <PDFViewer showToolbar={true} style={styles.viewer}>
                     {report}
                 </PDFViewer>
-            </div>
         </div>
     )
 }
