@@ -7,13 +7,12 @@ import { Select, MenuItem, FormControl, InputLabel } from "@material-ui/core";
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import { styled } from '@mui/material/styles';
-import Collapse from '@mui/material/Collapse';
 import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import IconButton from '@mui/material/IconButton';
+import { Tooltip } from "@mui/material";
+
 
 // YOUTUBE: https://www.youtube.com/watch?v=sTdt2cJS2dg
 
@@ -172,77 +171,58 @@ export default function PreviewImagesUserNotes(props) {
                     onChange={(event) => { setXRayNotesOnKeyToValue("KL", event.target.value) }}
                 /> */}
 
-                <Box>
-                    <Card sx={{ maxWidth: 500 }} variant="outlined">{
-                        <React.Fragment>
-                            <CardContent>
-                                <Typography sx={{ fontSize: 14 }} align='center' color="text.secondary" gutterBottom>
-                                    Calculated Kellgren-Lawrence Score
-                                </Typography>
-                                <Typography variant="h5" component="div" align='center'>
-                                    {KL(
-                                        context.xRayNotes.osteophyte,
-                                        context.xRayNotes.jointSpace,
-                                        context.xRayNotes.sclerosis,
-                                        context.xRayNotes.deformation)}
-                                </Typography>
+                <Tooltip placement="right-end" title={
+                    <React.Fragment>
+                        <Typography color="inherit">Calculated KL Score</Typography>
+                        <Typography paragraph sx={{ fontSize: 12 }} display="block">
+                            Kellgren-Lawrence method evaluates severity of knee OA as a sum score according to measurements of joint space, surface deformation, sclerosis, and presence of osteophytes
+                        </Typography>
+                        <Typography sx={{ fontSize: 12 }} display="block">
+                            Grade 0 = 0 points;
+                        </Typography>
+                        <Typography sx={{ fontSize: 12 }} display="block">
+                            Grade 1 = 1-2 points;
+                        </Typography>
+                        <Typography sx={{ fontSize: 12 }} display="block">
+                            Grade 2 = 3-4 points
+                        </Typography>
+                        <Typography sx={{ fontSize: 12 }} display="block">
+                            Grade 3 = 5-9 points;
+                        </Typography>
+                        <Typography paragraph sx={{ fontSize: 12 }} display="block">
+                            Grade 4 = 10 points
+                        </Typography>
+                        <Typography sx={{ fontSize: 8, fontStyle: 'italic' }}>
+                            Wick et al. Clinical Imaging Assessment of Knee Osteoarthritis in the Elderly. 2014.
+                        </Typography>
+                        <Typography sx={{ fontSize: 8, fontStyle: 'italic' }}>
+                            Kellgren & Lawrence. Radiological Assessment of Osteoarthrosis. 1957.
+                        </Typography>
 
-                                {/* expand for more details */}
-                            </CardContent>
-                            <CardActions disableSpacing>
-                                <ExpandMore
-                                    expand={expanded}
-                                    onClick={handleExpandClick}
-                                    aria-expanded={expanded}
-                                    aria-label="show more"
-                                >
-                                    <ExpandMoreIcon />
-                                </ExpandMore>
-                            </CardActions>
-
-                            {/* calculation details */}
-                            <Collapse in={expanded} timeout="auto" unmountOnExit>
-                                <CardContent>
-                                    <Typography variant="h6" component="div">
-                                        Definition:
-                                    </Typography>
-                                    <Typography paragraph sx={{ fontSize: 14, marginLeft: 2 }}>
-                                        Kellgren-Lawrence method evaluates severity of knee OA as a sum score according to measurements of joint space, surface deformation, sclerosis, and presence of osteophytes
-                                    </Typography>
-
-                                    {/* calculations */}
-                                    <Typography variant="h6" component="div">
-                                        Calculation:
-                                    </Typography>
-                                    <Typography sx={{ fontSize: 14, marginLeft: 2 }} display="block">
-                                        Grade 0 = 0 points;
-                                    </Typography>
-                                    <Typography sx={{ fontSize: 14, marginLeft: 2 }} display="block">
-                                        Grade 1 = 1-2 points;
-                                    </Typography>
-                                    <Typography sx={{ fontSize: 14, marginLeft: 2 }} display="block">
-                                        Grade 2 = 3-4 points
-                                    </Typography>
-                                    <Typography sx={{ fontSize: 14, marginLeft: 2 }} display="block">
-                                        Grade 3 = 5-9 points;
-                                    </Typography>
-                                    <Typography paragraph sx={{ fontSize: 14, marginLeft: 2 }} display="block">
-                                        Grade 4 = 10 points
-                                    </Typography>
-
-                                    {/* citations */}
-                                    <Typography sx={{ fontSize: 10, fontStyle: 'italic' }}>
-                                        Wick et al. Clinical Imaging Assessment of Knee Osteoarthritis in the Elderly. 2014.
-                                    </Typography>
-                                    <Typography sx={{ fontSize: 10, fontStyle: 'italic' }}>
-                                        Kellgren & Lawrence. Radiological Assessment of Osteoarthrosis. 1957.
-                                    </Typography>
-                                </CardContent>
-                            </Collapse>
-                        </React.Fragment>
-                    }
-                    </Card>
-                </Box>
+                    </React.Fragment>
+                }>
+                    <Box fullWidth>
+                        <Card variant="outlined">
+                            {
+                                <React.Fragment>
+                                    <CardContent>
+                                        <Typography sx={{ fontSize: 14 }} align='center' color="blue" gutterBottom>
+                                            User Calculated Kellgren-Lawrence Score
+                                        </Typography>
+                                        <Typography variant="h5" component="div" color="blue" align='center'>
+                                            {KL(
+                                                context.xRayNotes.osteophyte,
+                                                context.xRayNotes.jointSpace,
+                                                context.xRayNotes.sclerosis,
+                                                context.xRayNotes.deformation
+                                            )}
+                                        </Typography>
+                                    </CardContent>
+                                </React.Fragment>
+                            }
+                        </Card>
+                    </Box>
+                </Tooltip>
 
                 {/* physician notes from preview page */}
                 <form noValidate autoComplete='off'>

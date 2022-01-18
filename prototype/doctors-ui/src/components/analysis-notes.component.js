@@ -6,12 +6,9 @@ import { Select, MenuItem, FormControl, InputLabel } from "@material-ui/core";
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import IconButton from '@mui/material/IconButton';
+import { Tooltip } from "@mui/material";
 
 export default function AnalysisUserNotes(props) {
 
@@ -52,41 +49,11 @@ export default function AnalysisUserNotes(props) {
         }
     }
 
-    // for KL display card
-    const bull = (
-        <Box
-            component="span"
-            sx={{
-                display: 'inline-block',
-                mx: '2px',
-                transform: 'scale(0.8)'
-            }}
-        >
-        </Box>
-    );
-
-    const ExpandMore = styled((props) => {
-        const { expand, ...other } = props;
-        return <IconButton {...other} />;
-    })(({ theme, expand }) => ({
-        transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-        marginLeft: 'auto',
-        transition: theme.transitions.create('transform', {
-            duration: theme.transitions.duration.shortest,
-        }),
-    }));
-
-    const [expanded, setExpanded] = React.useState(false);
-
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
-
     return (
         <div>
             <Stack direction="column" alignItems="left" justifyContent="space-between" spacing={1}>
 
-                <h2>Update Notes If Needed</h2>
+                <h3>Update Notes If Needed</h3>
 
                 {/* dropdown -- osteophytes notes */}
                 <FormControl fullWidth className='menu-input'>
@@ -154,74 +121,58 @@ export default function AnalysisUserNotes(props) {
                     </Select>
                 </FormControl>
 
-                <Box>
-                    <Card sx={{ maxWidth: 500 }} variant="outlined">{
-                        <React.Fragment>
-                            <CardContent>
-                                <Typography sx={{ fontSize: 14 }} align='center' color="text.secondary" gutterBottom>
-                                    Calculated Kellgren-Lawrence Score
-                                </Typography>
-                                <Typography variant="h5" component="div" align='center'>
-                                    {KL(
-                                        context.xRayNotes.osteophyte,
-                                        context.xRayNotes.jointSpace,
-                                        context.xRayNotes.sclerosis,
-                                        context.xRayNotes.deformation)}
-                                </Typography>
-                            </CardContent>
+                <Tooltip placement="right-end" title={
+                    <React.Fragment>
+                        <Typography color="inherit">Calculated KL Score</Typography>
+                        <Typography paragraph sx={{ fontSize: 12 }} display="block">
+                            Kellgren-Lawrence method evaluates severity of knee OA as a sum score according to measurements of joint space, surface deformation, sclerosis, and presence of osteophytes
+                        </Typography>
+                        <Typography sx={{ fontSize: 12 }} display="block">
+                            Grade 0 = 0 points;
+                        </Typography>
+                        <Typography sx={{ fontSize: 12 }} display="block">
+                            Grade 1 = 1-2 points;
+                        </Typography>
+                        <Typography sx={{ fontSize: 12 }} display="block">
+                            Grade 2 = 3-4 points
+                        </Typography>
+                        <Typography sx={{ fontSize: 12 }} display="block">
+                            Grade 3 = 5-9 points;
+                        </Typography>
+                        <Typography paragraph sx={{ fontSize: 12 }} display="block">
+                            Grade 4 = 10 points
+                        </Typography>
+                        <Typography sx={{ fontSize: 8, fontStyle: 'italic' }}>
+                            Wick et al. Clinical Imaging Assessment of Knee Osteoarthritis in the Elderly. 2014.
+                        </Typography>
+                        <Typography sx={{ fontSize: 8, fontStyle: 'italic' }}>
+                            Kellgren & Lawrence. Radiological Assessment of Osteoarthrosis. 1957.
+                        </Typography>
 
-                            <CardActions disableSpacing>
-                                <ExpandMore
-                                    expand={expanded}
-                                    onClick={handleExpandClick}
-                                    aria-expanded={expanded}
-                                    aria-label="show more"
-                                >
-                                    <ExpandMoreIcon />
-                                </ExpandMore>
-                            </CardActions>
-
-                            {/* <Collapse in={expanded} timeout="auto" unmountOnExit>
-                                <CardContent>
-                                    <Typography variant="h6" component="div">
-                                        Definition:
-                                    </Typography>
-                                    <Typography paragraph sx={{ fontSize: 14, marginLeft: 2 }}>
-                                        Kellgren-Lawrence method evaluates severity of knee OA as a sum score according to measurements of joint space, surface deformation, sclerosis, and presence of osteophytes
-                                    </Typography>
-
-                                    <Typography variant="h6" component="div">
-                                        Calculation:
-                                    </Typography>
-                                    <Typography sx={{ fontSize: 14, marginLeft: 2 }} display="block">
-                                        Grade 0 = 0 points;
-                                    </Typography>
-                                    <Typography sx={{ fontSize: 14, marginLeft: 2 }} display="block">
-                                        Grade 1 = 1-2 points;
-                                    </Typography>
-                                    <Typography sx={{ fontSize: 14, marginLeft: 2 }} display="block">
-                                        Grade 2 = 3-4 points
-                                    </Typography>
-                                    <Typography sx={{ fontSize: 14, marginLeft: 2 }} display="block">
-                                        Grade 3 = 5-9 points;
-                                    </Typography>
-                                    <Typography paragraph sx={{ fontSize: 14, marginLeft: 2 }} display="block">
-                                        Grade 4 = 10 points
-                                    </Typography>
-
-                                    <Typography sx={{ fontSize: 10, fontStyle: 'italic' }}>
-                                        Wick et al. Clinical Imaging Assessment of Knee Osteoarthritis in the Elderly. 2014.
-                                    </Typography>
-                                    <Typography sx={{ fontSize: 10, fontStyle: 'italic' }}>
-                                        Kellgren & Lawrence. Radiological Assessment of Osteoarthrosis. 1957.
-                                    </Typography>
-                                </CardContent>
-                            </Collapse> */}
-
-                        </React.Fragment>
-                    }
-                    </Card>
-                </Box>
+                    </React.Fragment>
+                }>
+                    <Box fullWidth>
+                        <Card variant="outlined">
+                            {
+                                <React.Fragment>
+                                    <CardContent>
+                                        <Typography sx={{ fontSize: 14 }} align='center' color="blue" gutterBottom>
+                                            User Calculated Kellgren-Lawrence Score
+                                        </Typography>
+                                        <Typography variant="h5" component="div" color="blue" align='center'>
+                                            {KL(
+                                                context.xRayNotes.osteophyte,
+                                                context.xRayNotes.jointSpace,
+                                                context.xRayNotes.sclerosis,
+                                                context.xRayNotes.deformation
+                                            )}
+                                        </Typography>
+                                    </CardContent>
+                                </React.Fragment>
+                            }
+                        </Card>
+                    </Box>
+                </Tooltip>
 
                 {/* physician notes from preview page */}
                 <form noValidate autoComplete='off'>

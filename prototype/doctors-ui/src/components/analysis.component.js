@@ -1,9 +1,14 @@
 import React, { useContext, useEffect } from "react";
 import { StepContext } from "../context/StepContext";
 import Slider from '@mui/material/Slider';
-import Typography from '@mui/material/Typography';
+
 import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
 import Checkbox from '@mui/material/Checkbox';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+
+
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import Skeleton from '@mui/material/Skeleton';
@@ -15,7 +20,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { Paper, Tooltip } from "@mui/material";
+import { Tooltip } from "@mui/material";
 
 import AnalysisUserNotes from "./analysis-notes.component";
 
@@ -106,88 +111,115 @@ export default function Analysis(props) {
 
     return (
         <div>
-            <h1 className="analysis-title">Analysis</h1>
-
             <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
 
-                {value.loading && (
-                    <Stack spacing={1}>
-                        <Skeleton animation="wave" variant="rectangular" width={224} height={224} />
-                        <Skeleton animation="wave" variant="rectangular" width={228} height={75} />
-                        <Skeleton animation="wave" variant="rectangular" width={228} height={75} />
-                        <Skeleton animation="wave" variant="rectangular" width={228} height={75} />
-                    </Stack>
-                )}
-                {!value.loading && value.baseImage && (
-                    <Stack className="analysis-view" justifyContent="column" alignItems="center">
-                        <Box id="image-view">
-                            <Box width={value.baseImage.width * 1.5} height={value.baseImage.height * 1.5} />
-                            <img className="layer baseImage" key="baseImage" src={`${prefixImage}, ${value.baseImage.image}`} style={value.baseImage.style} />
-                            {value.layers.length > 0 && value.layers[value.selectedLayerIndex].description && value.layers[value.selectedLayerIndex].description !== "" &&
-                                <Tooltip title={value.layers[value.selectedLayerIndex].description}>
-                                    <img className="layer" src={value.layers[value.selectedLayerIndex].image} style={value.layers[value.selectedLayerIndex].style} />
-                                </Tooltip>
-                            }
-                            {value.layers.length > 0 && (!value.layers[value.selectedLayerIndex].description || value.layers[value.selectedLayerIndex].description === "") &&
-                                <img className="layer" src={value.layers[value.selectedLayerIndex].image} style={value.layers[value.selectedLayerIndex].style} />
-                            }
-                        </Box>
-                        {value.layers.length > 0 &&
-                            <Stack id="editor" flexDirection="row" justifyContent="space-around" alignItems="center">
-                                <Tooltip title={
-                                    <React.Fragment>
-                                        <Typography color="inherit">Predicted KL Score</Typography>
-                                        The KL score that the smart assistant calculated when assessing the XRay image
-                                    </React.Fragment>
-                                }>
-                                    <Paper className="klScoreCard editor-child">
-                                        <h2>KL-Score</h2>
-                                        <h2>{value.klScore}</h2>
-                                    </Paper>
-                                </Tooltip>
-                                <Box className="editor-child">
-                                    <FormControl sx={{ width: 250 }}>
-                                        <InputLabel id="explanation-select-label">Explanation</InputLabel>
-                                        <Select
-                                            labelId="explanation-select-label"
-                                            id="explanation-select"
-                                            value={value.selectedLayerIndex}
-                                            label="Explanations"
-                                            onChange={selectExplanationLayer}
-                                        >
-                                            {value.layers.map((layer, index) => {
-                                                return <MenuItem key={`explanation-select-${index}`} value={index}> {layer.name} </MenuItem>
-                                            })
-                                            }
-                                        </Select>
-                                    </FormControl>
-                                    <Stack className="editing-functions" flexDirection="row" alignItems="center">
-                                        <Tooltip title="Hide/Show layer">
-                                            <Checkbox
-                                                onChange={(_, checked) => toggleVisibility(checked, value.layers[value.selectedLayerIndex])}
-                                                checked={value.layers[value.selectedLayerIndex].active}
-                                                icon={<VisibilityOffIcon />}
-                                                checkedIcon={<VisibilityIcon />} />
-                                        </Tooltip>
-                                        {/* <Tooltip title="Change layer opacity"> */}
-                                        <Slider
-                                            aria-labelledby="input-slider"
-                                            className="slider"
-                                            onChange={(_, opacity) => { handleOpacity(opacity, value.layers[value.selectedLayerIndex]) }} // change-handler (updating and rerendering images with new opacity)
-                                            min={0}
-                                            step={0.01}
-                                            max={1}
-                                            value={value.layers[value.selectedLayerIndex].style.opacity} // the value (opacity) we are manipulation with this slider
-                                            valueLabelDisplay="auto"
-                                        />
-                                        {/* </Tooltip> */}
-                                    </Stack>
-                                </Box>
-                            </Stack>
-                        }
-                    </Stack >
-                )}
+                {/* left column */}
+                <div>
+                    {value.loading && (
+                        <Stack spacing={1}>
+                            <Skeleton animation="wave" variant="rectangular" width={224} height={224} />
+                            <Skeleton animation="wave" variant="rectangular" width={228} height={75} />
+                            <Skeleton animation="wave" variant="rectangular" width={228} height={75} />
+                            <Skeleton animation="wave" variant="rectangular" width={228} height={75} />
+                        </Stack>
+                    )}
 
+                    {!value.loading && value.baseImage && (
+                        <Stack className="analysis-view" justifyContent="column" alignItems="center" spacing={1}>
+
+                            {/* predicted kl score */}
+                            <Tooltip placement="left-end" title={
+                                <React.Fragment>
+                                    <Typography color="inherit">Predicted KL Score</Typography>
+                                    <Typography paragraph sx={{ fontSize: 12 }} display="block">
+                                        The KL score that the smart assistant calculated when assessing the XRay image
+                                    </Typography>
+                                </React.Fragment>
+                            }>
+                                <Box width={value.baseImage.width * 1.5}>
+                                    <Card variant="outlined">
+                                        {
+                                            <React.Fragment>
+                                                <CardContent>
+                                                    <Typography sx={{ fontSize: 14 }} align='center' color="red" gutterBottom>
+                                                        Predicted Kellgren-Lawrence Score
+                                                    </Typography>
+                                                    <Typography variant="h5" component="div" color="red" align='center'>
+                                                        {value.klScore}
+                                                    </Typography>
+                                                </CardContent>
+                                            </React.Fragment>
+                                        }
+                                    </Card>
+                                </Box>
+                            </Tooltip>
+
+                            {/* view images */}
+                            <Box id="image-view">
+                                <Box width={value.baseImage.width * 1.5} height={value.baseImage.height * 1.5} />
+                                <img className="layer baseImage" key="baseImage" src={`${prefixImage}, ${value.baseImage.image}`} style={value.baseImage.style} />
+                                {value.layers.length > 0 && value.layers[value.selectedLayerIndex].description && value.layers[value.selectedLayerIndex].description !== "" &&
+                                    <Tooltip placement="left-end" title={value.layers[value.selectedLayerIndex].description}>
+                                        <img className="layer" src={value.layers[value.selectedLayerIndex].image} style={value.layers[value.selectedLayerIndex].style} />
+                                    </Tooltip>
+                                }
+                                {value.layers.length > 0 && (!value.layers[value.selectedLayerIndex].description || value.layers[value.selectedLayerIndex].description === "") &&
+                                    <img className="layer" src={value.layers[value.selectedLayerIndex].image} style={value.layers[value.selectedLayerIndex].style} />
+                                }
+                            </Box>
+
+                            {value.layers.length > 0 &&
+                                <Stack id="editor" justifyContent="column" alignItems="center">
+                                    <Box className='menu-input'>
+                                        <FormControl className='menu-input' sx={{ width: value.baseImage.width * 1.5 }}>
+                                            <InputLabel id="explanation-select-label">Explanation</InputLabel>
+                                            <Select
+                                                labelId="explanation-select-label"
+                                                id="explanation-select"
+                                                value={value.selectedLayerIndex}
+                                                label="Explanations"
+                                                onChange={selectExplanationLayer}
+                                            >
+                                                {value.layers.map((layer, index) => {
+                                                    return <MenuItem key={`explanation-select-${index}`} value={index}> {layer.name} </MenuItem>
+                                                })
+                                                }
+                                            </Select>
+                                        </FormControl>
+
+                                        <Stack className="editing-functions" flexDirection="row" alignItems="center">
+                                            <Tooltip title="Hide/Show layer">
+                                                <Checkbox
+                                                    onChange={(_, checked) => toggleVisibility(checked, value.layers[value.selectedLayerIndex])}
+                                                    checked={value.layers[value.selectedLayerIndex].active}
+                                                    icon={<VisibilityOffIcon />}
+                                                    checkedIcon={<VisibilityIcon />} />
+                                            </Tooltip>
+                                            {/* <Tooltip title="Change layer opacity"> */}
+                                            <Slider
+                                                aria-labelledby="input-slider"
+                                                className="slider"
+                                                onChange={(_, opacity) => { handleOpacity(opacity, value.layers[value.selectedLayerIndex]) }} // change-handler (updating and rerendering images with new opacity)
+                                                min={0}
+                                                step={0.01}
+                                                max={1}
+                                                value={value.layers[value.selectedLayerIndex].style.opacity} // the value (opacity) we are manipulation with this slider
+                                                valueLabelDisplay="auto"
+                                            />
+                                            {/* </Tooltip> */}
+                                        </Stack>
+                                    </Box>
+                                </Stack>
+                            }
+                        </Stack >
+                    )}
+                </div>
+
+
+
+
+
+                {/* right column */}
                 <AnalysisUserNotes />
 
             </Stack >
