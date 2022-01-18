@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 
-import { Button, Card } from "@mui/material";
+import Button from "@mui/material";
+
 import PDFReport from "./pdf-report.component";
 import SourceCodeProRegular from "../fonts/Source_Code_Pro/SourceCodePro-Regular.ttf"
 import { StepContext } from "../context/StepContext";
@@ -138,7 +139,7 @@ export default function Report() {
         klScoresDistribution: {
             flexDirection: "row",
             justifyContent: "space-around",
-            alignItems:"stretch"
+            alignItems: "stretch"
         },
 
         klScores: {
@@ -178,16 +179,13 @@ export default function Report() {
 
     const report = <PDFReport styles={pdfStyles} content={context} />
 
-
     return (
         <div className="reportContainer">
             <h1>Report Preview</h1>
             <Button variant="contained">Go back</Button>
-            <Button variant="contained">
-                <PDFDownloadLink style={styles.downloadButton} document={report} fileName={`${patientNotes.appointmentDate}_${patientNotes.lastName}_${patientNotes.firstName}`}>
-                    {_ => "Download Report"}
-                </PDFDownloadLink>
-            </Button>
+            <PDFDownloadLink style={styles.downloadButton} document={report} fileName={`${patientNotes.appointmentDate}_${patientNotes.lastName}_${patientNotes.firstName}`}>
+                {({ blob, url, loading, error }) => <Button variant="contained">Download Report</Button>}
+            </PDFDownloadLink>
             <div>
                 {/* <PDFDownloadLink document={<PDFReport />} fileName={`${patientNotes.appointmentDate}_${patientNotes.lastName}_${patientNotes.firstName}`} /> */}
                 <PDFViewer showToolbar={true} style={styles.viewer}>
