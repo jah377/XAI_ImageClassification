@@ -116,104 +116,139 @@ export default function PDFReport(props) {
         </View>
     </View >
 
+    const header = <View style={{
+        margin: "1%",
+        paddingVertical: "2%",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#ECECEC",
+        borderRadius: "5px",
+        border: "1px solid #A7A7A7;",
+
+    }}>
+        <Text style={{ fontSize: 18 }}>Quin</Text>
+        <Text>Stadhouderskade 55, 1072 AB Amsterdam</Text>
+        <Text>+31 882 554 444</Text>
+        <Text style={{ fontSize: 20, paddingTop: "2%"}}>Kellgren-Lawrence Score - Smart Assist Report</Text>
+
+    </View>
+
     return (
-        < Document style={styles.page} title={`${patientNotes.appointmentDate}_${patientNotes.lastName}_${patientNotes.firstName}`
+        < Document title={`${patientNotes.appointmentDate}_${patientNotes.lastName}_${patientNotes.firstName}`
         } id={`${patientNotes.appointmentDate}_${patientNotes.lastName}_${patientNotes.firstName}`}>
+
             <Page
                 size="A4"
                 style={styles.page}
                 wrap>
 
+                {header}
+
                 {/* PATIENT INFORMATION */}
                 {patientInfoHeader}
 
                 {/* XRAY NOTES */}
-                <Text style={styles.header1}>Physician Evaluation</Text>
-                <View style={styles.doctorsEvaluation}>
+                <View style={styles.pageLayout}>
+                    <Text style={styles.header1}>Clinician Evaluation</Text>
 
-                    <View style={styles.xRayNotes}>
-                        <View style={styles.xRayNotes.child}>
-                            <Text style={styles.description}>Osteophyte Grade</Text>
-                            <Text>{xRayNotes.osteophyte}</Text>
+                    <View style={styles.sideBySide}>
+
+                        <View style={styles.notes}>
+                            <View style={styles.klScoreContainer}>
+                                <Text style={styles.description}>Kellgren-Lawrence Score</Text>
+                                <Text style={styles.klScore}>{xRayNotes.KL} </Text>
+                            </View>
+
+                            <View style={styles.elementListing}>
+                                <View style={styles.elementListing.child}>
+                                    <Text style={styles.description}>Osteophyte Formation</Text>
+                                    <Text>{xRayNotes.osteophyte}</Text>
+                                </View>
+
+                                <View style={styles.elementListing.child}>
+                                    <Text style={styles.description}>Joint Space Width</Text>
+                                    <Text>{xRayNotes.jointSpace}</Text>
+                                </View>
+
+                                <View style={styles.elementListing.child}>
+                                    <Text style={styles.description}>Subchondral Sclerosis</Text>
+                                    <Text>{xRayNotes.sclerosis}</Text>
+                                </View>
+
+                                <View style={styles.elementListing.child}>
+                                    <Text style={styles.description}>Deformation</Text>
+                                    <Text>{xRayNotes.deformation}</Text>
+                                </View>
+
+                            </View>
                         </View>
 
-                        <View style={styles.xRayNotes.child}>
-                            <Text style={styles.description}>Deformation Grade</Text>
-                            <Text>{xRayNotes.deformation}</Text>
-                        </View>
-
-                        <View style={styles.xRayNotes.child}>
-                            <Text style={styles.description}>Sclerosis Level</Text>
-                            <Text>{xRayNotes.sclerosis}</Text>
-                        </View>
-
-                        <View style={styles.xRayNotes.child}>
-                            <Text style={styles.description}>Joint Space</Text>
-                            <Text>{xRayNotes.jointSpace}</Text>
-                        </View>
+                        <Image
+                            style={{
+                                width: images.baseImage.width,
+                                height: images.baseImage.height
+                            }}
+                            src={`data:image/png;base64,${images.baseImage.image}`}
+                        />
                     </View>
 
-                    <View style={styles.physicianKlScore}>
-                        <Text style={styles.description}>KL Score</Text>
-                        <Text style={styles.klScore}>{xRayNotes.KL} </Text>
-                    </View>
+                    <View style={{
+                        paddingTop: "5%"
+                    }}>
+                        <View style={styles.patientInformation}>
+                            <Text style={styles.description}>Medical Notes</Text>
+                            <Text>{patientNotes.medicalNotes}</Text>
+                        </View>
 
-                    <Image
-                        style={{
-                            width: images.baseImage.width,
-                            height: images.baseImage.height
-                        }}
-                        src={`data:image/png;base64,${images.baseImage.image}`}
-                    />
-
-                    <View style={styles.patientInformation}>
-                        <Text style={styles.description}>Medical Notes</Text>
-                        <Text>{patientNotes.medicalNotes}</Text>
-                    </View>
-
-                    <View style={styles.patientInformation} wrap={false}>
-                        <Text style={styles.description}>X Ray Notes</Text>
-                        <Text>{xRayNotes.notes} </Text>
+                        <View style={styles.patientInformation} wrap={false}>
+                            <Text style={styles.description}>X Ray Notes</Text>
+                            <Text>{xRayNotes.notes} </Text>
+                        </View>
                     </View>
                 </View>
             </Page>
+
             <Page size="A4" style={styles.page}>
-                <View>
+                {/* PATIENT INFORMATION */}
+                {header}
+                {patientInfoHeader}
+                <View style={styles.pageLayout}>
 
-                    {/* PATIENT INFORMATION */}
-                    {patientInfoHeader}
+                    <Text style={styles.header1}>Smart Assist Evaluation</Text>
 
-                    <Text style={styles.header1}>Smart Assistant Evaluation</Text>
-                    <View style={styles.smartAssistantPage}>
+                    <View>
+                        <View style={styles.sideBySide}>
 
-                        <View style={styles.klScoreContainer}>
-                            <View style={styles.physicianKlScore}>
-                                <Text style={styles.description}>Calculated KL Score</Text>
-                                <Text style={styles.klScore}>{klScore.score} </Text>
-                            </View>
-                        </View>
+                            <View style={styles.notes}>
+                                <View style={styles.klScoreContainer}>
+                                    <Text style={styles.description}>Predicted KL Score</Text>
+                                    <Text style={styles.klScore}>{klScore.score} </Text>
+                                </View>
 
-
-                        <View>
-                            <Text style={styles.description}>Probability Distribution of KL Score</Text>
-                            <View style={styles.klScoresDistribution}>
-                                <Image
-                                    style={{
-                                        width: "50%"
-                                    }}
-                                    src={`data:image/png;base64,${images.klScore.visualisation}`}
-                                />
-                                <View style={styles.klScores}>
+                                <View style={styles.elementListing}>
                                     {images.klScore.distributions.map((dist, i) => {
-                                        return <View key={`${i}-score-dist`} style={styles.xRayNotes.child}>
-                                            <Text key={`${i}-score-dist-text`}>{dist.score}: {dist.prob * 100}% </Text>
+                                        return <View key={`${i}-score-dist`} style={styles.elementListing.child}>
+                                            <Text key={`${i}-score-dist-desc`} style={styles.description}>KL Score {dist.score}</Text>
+                                            <Text key={`${i}-score-dist-text`}>{dist.prob * 100}% </Text>
                                         </View>
                                     })}
                                 </View>
+
+                            </View>
+
+                            <View style={styles.notes}>
+                                <Text style={styles.klScoreDescription}>Probability Distribution of KL Score</Text>
+                                <Image
+                                    style={{
+                                        width: "90%"
+                                    }}
+                                    src={`data:image/png;base64,${images.klScore.visualisation}`}
+                                />
                             </View>
                         </View>
 
-                        <Text style={styles.header2}>Observations</Text>
+                        <Text style={styles.header2, { paddingTop: "5%" }}>Observations</Text>
 
                         {/* IMAGE DISPLAY */}
                         {explanations.map((explanation, index) => {

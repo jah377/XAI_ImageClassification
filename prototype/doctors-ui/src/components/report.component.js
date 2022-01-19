@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import { Button, Stack} from "@mui/material";
+import { Button, Stack } from "@mui/material";
 
 import PDFReport from "./pdf-report.component";
 import SourceCodeProRegular from "../fonts/Source_Code_Pro/SourceCodePro-Regular.ttf"
@@ -39,6 +39,11 @@ export default function Report() {
             // fontStyle: "normal",
             fontSize: 14,
         },
+        pageLayout: {
+            paddingVertical: "5%",
+            paddingHorizontal: "7%"
+        },
+
         section: {
             margin: 10,
             padding: 10,
@@ -51,15 +56,19 @@ export default function Report() {
         header1: {
             fontSize: "20",
             textAlign: "left",
-            paddingTop: "5%",
-            paddingLeft: "5%"
+            paddingBottom: "3%",
         },
 
         header2: {
-            fontSize: "18",
+            fontSize: "19",
             textAlign: "left",
-            paddingTop: "5%",
-            // paddingLeft: "5%"
+            paddingBottom: "3%",
+        },
+
+        header2: {
+            fontSize: "17",
+            textAlign: "left",
+            paddingBottom: "3%",
         },
 
         headerDescription: {
@@ -84,32 +93,40 @@ export default function Report() {
             textAlign: "justify"
         },
 
-        doctorsEvaluation: {
-            padding: "5%",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center"
-        },
-
-        xRayNotes: {
-            // padding: "5%",
+        sideBySide: {
             flexDirection: "row",
             justifyContent: "space-around",
+            alignContent: "stretch",
+
+        },
+
+        notes: {
+            flexDirection: "column",
+            alignItems: "stretch",
+            justifyContent: "space-evenly",
+        },
+
+        elementListing: {
+            flexDirection: "column",
+            justifyContent: "space-around",
+            alignItems: "space-evenly",
             borderRadius: "5px",
             border: "1px solid #A7A7A7;",
+            marginHorizontal: "5%",
 
             child: {
-                marginLeft: "5%",
-                marginRight: "5%",
+                marginHorizontal: "10%",
                 marginTop: "2%",
                 marginBottom: "2%",
+                justifyContent: "center",
+                alignItems: "center"
             }
         },
 
-        physicianKlScore: {
-            marginTop: "2%",
-            marginBottom: "2%",
-            // backgroundColor: "lightgrey",
+        klScoreContainer: {
+            marginHorizontal: "5%",
+            marginVertical: "2%",
+
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
@@ -123,31 +140,14 @@ export default function Report() {
         klScore: {
             fontWeight: "bold",
             fontSize: 25,
-            marginTop: "0.5%"
+            marginTop: "0.5%",
         },
 
-        smartAssistantPage: {
-            padding: "5%"
-        },
-
-        klScoreContainer: {
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center"
-        },
-
-        klScoresDistribution: {
-            flexDirection: "row",
-            justifyContent: "space-around",
-            alignItems: "stretch"
-        },
-
-        klScores: {
-            flexDirection: "column",
-            justifyContent: "space-around",
-            padding: "2%",
-            borderRadius: "5px",
-            border: "1px solid #A7A7A7;"
+        klScoreDescription: {
+            paddingLeft: "5%",
+            paddingTop: "5%",
+            fontSize: 9,
+            color: "grey"
         },
 
         images: {
@@ -181,7 +181,6 @@ export default function Report() {
 
     return (
         <div className="reportContainer">
-            {/* <h1>Report Preview</h1> */}
             <Stack className="report" flexDirection="row" alignItems="center" justifyContent="space-between">
                 {/* TODO make this a button group and go back to each individual step */}
                 <Button variant="contained">Go back</Button>
@@ -190,9 +189,9 @@ export default function Report() {
                     {({ blob, url, loading, error }) => <Button variant="contained">Download Report</Button>}
                 </PDFDownloadLink>
             </Stack>
-                <PDFViewer showToolbar={true} style={styles.viewer}>
-                    {report}
-                </PDFViewer>
+            <PDFViewer showToolbar={true} style={styles.viewer}>
+                {report}
+            </PDFViewer>
         </div>
     )
 }
