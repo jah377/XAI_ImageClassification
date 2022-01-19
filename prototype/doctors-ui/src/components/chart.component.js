@@ -45,7 +45,7 @@ export default function BarChart(props) {
                     plugins: {
                         title: {
                             display: true,
-                            text: "Kellgren-Lawrence Score Predictions"
+                            text: "KL Score Prediction Probabilities [%]"
                         },
                         legend: {
                             display: false,
