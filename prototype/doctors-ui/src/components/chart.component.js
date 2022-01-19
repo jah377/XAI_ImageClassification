@@ -24,10 +24,17 @@ export default function BarChart(props) {
 
     const chartData = props.chartData
 
+    let ref = React.useRef(null)
+
+    React.useEffect(() => {
+        const base64Image = ref.current.toBase64Image()
+        props.callback(base64Image)
+    }, [])
     return (
         <div style={{ height: "300px" }}>
             <Bar
                 data={chartData}
+                ref={ref}
                 options={{
                     scales: {
                         y: {

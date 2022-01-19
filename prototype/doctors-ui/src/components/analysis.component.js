@@ -20,13 +20,11 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { Tooltip } from "@mui/material";
+import { Button, Tooltip } from "@mui/material";
 
 import AnalysisUserNotes from "./analysis-notes.component";
 
 import BarChart from "./chart.component";
-
-
 
 
 export default function Analysis(props) {
@@ -137,7 +135,8 @@ export default function Analysis(props) {
     }
 
     klScores.distributions = klScores.distributions.sort((k, l) => { return k.score - l.score })
-    klScores.distributions = klScores.distributions.map(s => { return {...s, "prob": s.prob * 100}})
+    klScores.distributions = klScores.distributions.map(s => { return { ...s, "prob": s.prob * 100 } })
+
 
     const chartData = {
         labels: klScores.distributions.map(s => s.score),
@@ -152,9 +151,17 @@ export default function Analysis(props) {
         ]
     }
 
+    let visualization = ""
+
     return (
         <div>
             <Stack direction="row" alignItems="flex-start" justifyContent="space-between" alignContent="center" spacing={5}>
+
+                <Button onClick={() => setContext(context => ({
+                    ...context,
+                    step: context.step + 1, // incrementing the step counter, we get navigated to the next step "Preview Image"
+                    visualization: visualization // TODO set visualization into the proper structure of context.images.klScores.visualization
+                }))} >Create Report</Button>
 
                 {/* left column */}
                 <Stack>
@@ -185,7 +192,9 @@ export default function Analysis(props) {
                         </Box>
                     </Tooltip>
 
-                    <BarChart height="300px" chartData={chartData} />
+                    <BarChart height="300px" chartData={chartData} callback={(v) => {
+                        visualization = v
+                    }} />
 
                 </Stack>
 
