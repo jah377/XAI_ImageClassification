@@ -43,47 +43,20 @@ export default function PreviewImagesUserNotes(props) {
         var total = osteophyte + jointSpace + sclerosis + deformation
 
         if (total == 10) {
-            return 4;
+            context.xRayNotes.KL = 4;
         } else if (total >= 5) {
-            return 3;
+            context.xRayNotes.KL = 3;
         } else if (total >= 3) {
-            return 2;
+            context.xRayNotes.KL = 2;
         } else if (total >= 1) {
-            return 1;
+            context.xRayNotes.KL = 1;
         } else {
-            return 0;
+            context.xRayNotes.KL = 0;
         }
+
+        return context.xRayNotes.KL
+
     }
-
-    // for KL display card
-    const bull = (
-        <Box
-            component="span"
-            sx={{
-                display: 'inline-block',
-                mx: '2px',
-                transform: 'scale(0.8)'
-            }}
-        >
-        </Box>
-    );
-
-    const ExpandMore = styled((props) => {
-        const { expand, ...other } = props;
-        return <IconButton {...other} />;
-    })(({ theme, expand }) => ({
-        transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-        marginLeft: 'auto',
-        transition: theme.transitions.create('transform', {
-            duration: theme.transitions.duration.shortest,
-        }),
-    }));
-
-    const [expanded, setExpanded] = React.useState(false);
-
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
 
     return (
         <div>
