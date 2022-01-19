@@ -222,7 +222,7 @@ export default function PDFReport(props) {
 
                             <View style={styles.notes}>
                                 <View style={styles.klScoreContainer}>
-                                    <Text style={styles.description}>Predicted KL Score</Text>
+                                    <Text style={styles.description}>Predicted Kellgren-Lawrence Score</Text>
                                     <Text style={styles.klScore}>{klScore.score} </Text>
                                 </View>
 
