@@ -24,6 +24,7 @@ import { Tooltip } from "@mui/material";
 
 import AnalysisUserNotes from "./analysis-notes.component";
 
+import BarChart from "./chart.component";
 
 
 
@@ -74,7 +75,7 @@ export default function Analysis(props) {
 
     // useEffect is being run before and after each render of the site, to limit the API call only to when no data is in the frontend, the if-clause is introduced
     useEffect(() => {
-        if (value.layers.length == 0) {
+        if (value.layers.length === 0) {
             setValue({ ...value, loading: true })
             // AnalysisDisplayService.fetchData(context['uploadId'], setResponse)
             AnalysisDisplayService.fetchData("test", setResponse)
@@ -109,11 +110,86 @@ export default function Analysis(props) {
         setValue({ ...value, "selectedLayerIndex": event.target.value })
     }
 
+    // TODO remove this stub and receive actual response
+    let klScores = {
+        "distributions": [
+            {
+                "score": 0,
+                "prob": 0.0
+            },
+            {
+                "score": 1,
+                "prob": 0.0
+            },
+            {
+                "score": 2,
+                "prob": 0.0
+            },
+            {
+                "score": 3,
+                "prob": 0.04
+            },
+            {
+                "score": 4,
+                "prob": 0.95
+            }
+        ]
+    }
+
+    klScores.distributions = klScores.distributions.sort((k, l) => { return k.score - l.score })
+    klScores.distributions = klScores.distributions.map(s => { return {...s, "prob": s.prob * 100}})
+
+    const chartData = {
+        labels: klScores.distributions.map(s => s.score),
+        datasets: [
+            {
+                label: "Kellgren-Lawrence Score",
+                data: klScores.distributions.map(s => s.prob),
+                backgroundColor: [
+                    "#2a71d0"
+                ]
+            }
+        ]
+    }
+
     return (
         <div>
-            <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
+            <Stack direction="row" alignItems="flex-start" justifyContent="space-between" alignContent="center" spacing={5}>
 
                 {/* left column */}
+                <Stack>
+                    {/* predicted kl score */}
+                    <Tooltip placement="left-end" title={
+                        <React.Fragment>
+                            <Typography color="inherit">Predicted KL Score</Typography>
+                            <Typography paragraph sx={{ fontSize: 12 }} display="block">
+                                The KL score that the smart assistant calculated when assessing the XRay image
+                            </Typography>
+                        </React.Fragment>
+                    }>
+                        <Box >
+                            <Card variant="outlined">
+                                {
+                                    <React.Fragment>
+                                        <CardContent>
+                                            <Typography sx={{ fontSize: 14 }} align='center' color="red" gutterBottom>
+                                                Predicted Kellgren-Lawrence Score
+                                            </Typography>
+                                            <Typography variant="h5" component="div" color="red" align='center'>
+                                                {value.klScore}
+                                            </Typography>
+                                        </CardContent>
+                                    </React.Fragment>
+                                }
+                            </Card>
+                        </Box>
+                    </Tooltip>
+
+                    <BarChart height="300px" chartData={chartData} />
+
+                </Stack>
+
+                {/* middle column */}
                 <div>
                     {value.loading && (
                         <Stack spacing={1}>
@@ -126,33 +202,6 @@ export default function Analysis(props) {
 
                     {!value.loading && value.baseImage && (
                         <Stack className="analysis-view" justifyContent="column" alignItems="center" spacing={1}>
-
-                            {/* predicted kl score */}
-                            <Tooltip placement="left-end" title={
-                                <React.Fragment>
-                                    <Typography color="inherit">Predicted KL Score</Typography>
-                                    <Typography paragraph sx={{ fontSize: 12 }} display="block">
-                                        The KL score that the smart assistant calculated when assessing the XRay image
-                                    </Typography>
-                                </React.Fragment>
-                            }>
-                                <Box width={value.baseImage.width * 1.5}>
-                                    <Card variant="outlined">
-                                        {
-                                            <React.Fragment>
-                                                <CardContent>
-                                                    <Typography sx={{ fontSize: 14 }} align='center' color="red" gutterBottom>
-                                                        Predicted Kellgren-Lawrence Score
-                                                    </Typography>
-                                                    <Typography variant="h5" component="div" color="red" align='center'>
-                                                        {value.klScore}
-                                                    </Typography>
-                                                </CardContent>
-                                            </React.Fragment>
-                                        }
-                                    </Card>
-                                </Box>
-                            </Tooltip>
 
                             {/* view images */}
                             <Box id="image-view">
@@ -214,10 +263,6 @@ export default function Analysis(props) {
                         </Stack >
                     )}
                 </div>
-
-
-
-
 
                 {/* right column */}
                 <AnalysisUserNotes />
