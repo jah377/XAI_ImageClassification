@@ -37,16 +37,18 @@ export default function AnalysisUserNotes(props) {
         var total = osteophyte + jointSpace + sclerosis + deformation
 
         if (total == 10) {
-            return 4;
+            context.xRayNotes.KL = 4;
         } else if (total >= 5) {
-            return 3;
+            context.xRayNotes.KL = 3;
         } else if (total >= 3) {
-            return 2;
+            context.xRayNotes.KL = 2;
         } else if (total >= 1) {
-            return 1;
+            context.xRayNotes.KL = 1;
         } else {
-            return 0;
+            context.xRayNotes.KL = 0;
         }
+
+        return context.xRayNotes.KL
     }
 
     return (

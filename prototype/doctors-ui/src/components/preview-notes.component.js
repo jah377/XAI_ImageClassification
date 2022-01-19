@@ -8,9 +8,7 @@ import { Select, MenuItem, FormControl, InputLabel } from "@material-ui/core";
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
 import { Tooltip } from "@mui/material";
 
 
@@ -55,7 +53,6 @@ export default function PreviewImagesUserNotes(props) {
         }
 
         return context.xRayNotes.KL
-
     }
 
     return (
@@ -129,20 +126,6 @@ export default function PreviewImagesUserNotes(props) {
                         <MenuItem value={2}>2 - Strong</MenuItem >
                     </Select>
                 </FormControl>
-
-                {/* composite KL score calculated from user input */}
-                {/* <TextField
-                    className="preview-notes"
-                    label="Calculated KL Score"
-                    varient="outlined"
-                    fullWidth
-                    value={KL(
-                        context.xRayNotes.osteophyte,
-                        context.xRayNotes.jointSpace,
-                        context.xRayNotes.sclerosis,
-                        context.xRayNotes.deformation)}
-                    onChange={(event) => { setXRayNotesOnKeyToValue("KL", event.target.value) }}
-                /> */}
 
                 <Tooltip placement="right-end" title={
                     <React.Fragment>
