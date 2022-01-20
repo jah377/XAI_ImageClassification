@@ -58,16 +58,13 @@ export default function UploadImages(props) {
     return (
         <div>
             <div>
-                <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
+                <Stack direction="row" alignItems="flex-start" justifyContent="flex-start" spacing={2}>
                     <label htmlFor="contained-button-file">
                         <Input accept="image/*" id="contained-button-file" type="file" onChange={selectFile} />
                         <Button variant="contained" component="span" size="large">
-                            Upload X-Ray
+                            Upload X-ray
                         </Button>
                     </label>
-                    <Button variant="contained" component="span" size="large" onClick={upload}>
-                        Preview Selection
-                    </Button>
                 </Stack>
             </div>
             <Stack direction="row" alignItems="flex-start" justifyContent="center" spacing={2} className="uploadStack">
@@ -78,11 +75,17 @@ export default function UploadImages(props) {
 
                 {!context.selectedImage && (
                     <div className="upload-container">
-                        Please upload an X-Ray
+                        Please upload an X-ray
                     </div>
                 )}
                 <div className='upload-notes'>
                     <FileUploadUserNotes />
+
+                    <Stack direction="row" alignItems="flex-start" justifyContent="flex-end" spacing={2} sx={{marginTop: "4%"}}>
+                        <Button variant="contained" component="span" size="large" onClick={upload}>
+                            Preview Selection
+                        </Button>
+                    </Stack>
                 </div>
             </Stack>
         </div>

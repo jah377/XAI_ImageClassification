@@ -21,8 +21,8 @@ function App() {
   ]
 
   const stageNames = [
-    'Upload Image',
-    'Preview Image',
+    'Upload X-ray',
+    'Preview X-ray',
     'Analysis',
     'Report',
   ];
