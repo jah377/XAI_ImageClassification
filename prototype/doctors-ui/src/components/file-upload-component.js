@@ -75,11 +75,11 @@ export default function UploadImages(props) {
                         <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
                             <label htmlFor="contained-button-file">
                                 <Input accept="image/*" id="contained-button-file" type="file" onChange={selectFile} />
-                                <Button variant="contained" component="span">
+                                <Button variant="contained" component="span" size="large">
                                     Select
                                 </Button>
                             </label>
-                            <Button variant="contained" component="span" onClick={upload}>
+                            <Button variant="contained" component="span" size="large" onClick={upload}>
                                 Upload
                             </Button>
                         </Stack>
