@@ -51,11 +51,12 @@ export default function AnalysisUserNotes(props) {
         return context.xRayNotes.KL
     }
 
+
     return (
         <div>
             <Stack direction="column" alignItems="left" justifyContent="space-between" spacing={1}>
 
-                <h3>Update Notes If Needed</h3>
+                Update Notes If Needed
 
                 {/* dropdown -- osteophytes notes */}
                 <FormControl fullWidth className='menu-input'>

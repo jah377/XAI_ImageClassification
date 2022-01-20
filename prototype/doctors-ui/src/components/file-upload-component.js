@@ -56,7 +56,7 @@ export default function UploadImages(props) {
 
     return (
         <div>
-            <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
+            <Stack direction="row" alignItems="flex-start" justifyContent="center" spacing={2}>
 
                 <div>
                     <div className="upload-container">

@@ -155,7 +155,8 @@ export default function Analysis(props) {
 
     return (
         <div>
-            <Stack direction="row" alignItems="flex-start" justifyContent="space-between" alignContent="center" spacing={5}>
+            {/* <Stack direction="row" alignItems="flex-start" justifyContent="space-between" alignContent="center" spacing={5}> */}
+            <Stack direction="row" alignItems="flex-start" justifyContent="center" spacing={2}>
 
                 <Button onClick={() => setContext(context => ({
                     ...context,
