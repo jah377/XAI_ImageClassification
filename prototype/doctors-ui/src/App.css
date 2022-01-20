@@ -46,16 +46,24 @@ html,
   align-items: flex-start;
 }
 
-.upload {
-  max-width: 400px;
+
+.uploadStack {
+  margin-top: 2%;
 }
 
 .upload-container {
-  /* border: 2px dashed #AAAa; */
-  /* min-width: 336; */
+  border: 1px dashed lightgray;
+  min-height: 448px;
   width: 448px;
   max-width: 448px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: lightgray;
 }
+
 
 .ReactCrop__image {
   max-height: 600px;

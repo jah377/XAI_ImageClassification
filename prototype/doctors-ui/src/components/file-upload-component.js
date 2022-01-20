@@ -62,7 +62,7 @@ export default function UploadImages(props) {
                     <label htmlFor="contained-button-file">
                         <Input accept="image/*" id="contained-button-file" type="file" onChange={selectFile} />
                         <Button variant="contained" component="span" size="large">
-                            Select
+                            Upload X-Ray
                         </Button>
                     </label>
                     <Button variant="contained" component="span" size="large" onClick={upload}>
@@ -70,16 +70,17 @@ export default function UploadImages(props) {
                     </Button>
                 </Stack>
             </div>
-            <Stack direction="row" alignItems="flex-start" justifyContent="center" spacing={2}>
-                <div>
+            <Stack direction="row" alignItems="flex-start" justifyContent="center" spacing={2} className="uploadStack">
+
+                {context.selectedImage && (
+                    <ReactCrop src={context.selectedImage} ref={r => imgRef = r} crop={crop} onChange={newCrop => setCrop(newCrop)} />
+                )}
+
+                {!context.selectedImage && (
                     <div className="upload-container">
-                        {/* TODO make this a drag and drop zone */}
-                        {/* <MyDropZone onSuccess={this.upload}/> */}
-                        {context.selectedImage && (
-                            <ReactCrop src={context.selectedImage} ref={r => imgRef = r} crop={crop} onChange={newCrop => setCrop(newCrop)} />
-                        )}
+                        Please upload an X-Ray
                     </div>
-                </div>
+                )}
                 <div className='upload-notes'>
                     <FileUploadUserNotes />
                 </div>
