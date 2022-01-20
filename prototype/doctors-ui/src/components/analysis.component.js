@@ -21,6 +21,8 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { Button, Tooltip } from "@mui/material";
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import Icon from '@mui/material/Icon';
 
 import AnalysisUserNotes from "./analysis-notes.component";
 
@@ -155,37 +157,43 @@ export default function Analysis(props) {
 
     return (
         <div>
-            {/* <Stack direction="row" alignItems="flex-start" justifyContent="space-between" alignContent="center" spacing={5}> */}
+
             <Stack direction="row" alignItems="flex-start" justifyContent="center" spacing={2}>
 
                 {/* left column */}
                 <Stack>
+
+
                     {/* predicted kl score */}
-                    <Tooltip placement="left-end" title={
-                        <React.Fragment>
-                            <Typography color="inherit">Predicted KL Score</Typography>
-                            <Typography paragraph sx={{ fontSize: 12 }} display="block">
-                                The KL score that the smart assistant calculated when assessing the XRay image
-                            </Typography>
-                        </React.Fragment>
-                    }>
-                        <Box >
-                            <Card variant="outlined">
-                                {
-                                    <React.Fragment>
-                                        <CardContent>
-                                            <Typography sx={{ fontSize: 14 }} align='center' color="red" gutterBottom>
-                                                Predicted Kellgren-Lawrence Score
-                                            </Typography>
-                                            <Typography variant="h5" component="div" color="red" align='center'>
-                                                {value.klScore}
-                                            </Typography>
-                                        </CardContent>
-                                    </React.Fragment>
-                                }
-                            </Card>
-                        </Box>
-                    </Tooltip>
+                    <Box fullWidth>
+                        <Card variant="outlined">
+                            {
+                                <React.Fragment>
+                                    <CardContent>
+                                        <Typography sx={{ fontSize: 14 }} align='center' color="#D1682E" gutterBottom>
+                                            Predicted Kellgren-Lawrence Score
+                                        </Typography>
+                                        <Typography variant="h5" component="div" color="#D1682E" align='center'>
+                                            {value.klScore}
+                                        </Typography>
+                                    </CardContent>
+                                </React.Fragment>
+                            }
+
+                            <Tooltip placement="left-end" title={
+                                <React.Fragment>
+                                    <Typography color="inherit">Calculated KL Score</Typography>
+                                    <Typography paragraph sx={{ fontSize: 12 }} display="block">
+                                        The KL score that the smart assistant calculated when assessing the XRay image
+                                    </Typography>
+                                </React.Fragment>
+                            }>
+                                <Icon style={{ float: 'right', color: 'inherit' }} >
+                                    <InfoOutlinedIcon fontSize="small" />
+                                </Icon>
+                            </Tooltip>
+                        </Card>
+                    </Box>
 
                     <BarChart height="300px" chartData={chartData} callback={(v) => {
                         visualization = v

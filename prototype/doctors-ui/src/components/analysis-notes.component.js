@@ -9,6 +9,8 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { Tooltip } from "@mui/material";
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import Icon from '@mui/material/Icon';
 
 export default function AnalysisUserNotes(props) {
 
@@ -124,58 +126,61 @@ export default function AnalysisUserNotes(props) {
                     </Select>
                 </FormControl>
 
-                <Tooltip placement="right-end" title={
-                    <React.Fragment>
-                        <Typography color="inherit">Calculated KL Score</Typography>
-                        <Typography paragraph sx={{ fontSize: 12 }} display="block">
-                            Kellgren-Lawrence method evaluates severity of knee OA as a sum score according to measurements of joint space, surface deformation, sclerosis, and presence of osteophytes
-                        </Typography>
-                        <Typography sx={{ fontSize: 12 }} display="block">
-                            Grade 0 = 0 points;
-                        </Typography>
-                        <Typography sx={{ fontSize: 12 }} display="block">
-                            Grade 1 = 1-2 points;
-                        </Typography>
-                        <Typography sx={{ fontSize: 12 }} display="block">
-                            Grade 2 = 3-4 points
-                        </Typography>
-                        <Typography sx={{ fontSize: 12 }} display="block">
-                            Grade 3 = 5-9 points;
-                        </Typography>
-                        <Typography paragraph sx={{ fontSize: 12 }} display="block">
-                            Grade 4 = 10 points
-                        </Typography>
-                        <Typography sx={{ fontSize: 8, fontStyle: 'italic' }}>
-                            Wick et al. Clinical Imaging Assessment of Knee Osteoarthritis in the Elderly. 2014.
-                        </Typography>
-                        <Typography sx={{ fontSize: 8, fontStyle: 'italic' }}>
-                            Kellgren & Lawrence. Radiological Assessment of Osteoarthrosis. 1957.
-                        </Typography>
+                <Box fullWidth>
+                    <Card variant="outlined">
+                        {
+                            <React.Fragment>
+                                <CardContent>
+                                    <Typography sx={{ fontSize: 14 }} align='center' color="#2824D1" gutterBottom>
+                                        User Calculated Kellgren-Lawrence Score
+                                    </Typography>
+                                    <Typography variant="h5" component="div" color="#2824D1" align='center'>
+                                        {KL(
+                                            context.xRayNotes.osteophyte,
+                                            context.xRayNotes.jointSpace,
+                                            context.xRayNotes.sclerosis,
+                                            context.xRayNotes.deformation
+                                        )}
+                                    </Typography>
+                                </CardContent>
+                            </React.Fragment>
+                        }
 
-                    </React.Fragment>
-                }>
-                    <Box fullWidth>
-                        <Card variant="outlined">
-                            {
-                                <React.Fragment>
-                                    <CardContent>
-                                        <Typography sx={{ fontSize: 14 }} align='center' color="blue" gutterBottom>
-                                            User Calculated Kellgren-Lawrence Score
-                                        </Typography>
-                                        <Typography variant="h5" component="div" color="blue" align='center'>
-                                            {KL(
-                                                context.xRayNotes.osteophyte,
-                                                context.xRayNotes.jointSpace,
-                                                context.xRayNotes.sclerosis,
-                                                context.xRayNotes.deformation
-                                            )}
-                                        </Typography>
-                                    </CardContent>
-                                </React.Fragment>
-                            }
-                        </Card>
-                    </Box>
-                </Tooltip>
+                        <Tooltip placement="right-end" title={
+                            <React.Fragment>
+                                <Typography color="inherit">Calculated KL Score</Typography>
+                                <Typography paragraph sx={{ fontSize: 12 }} display="block">
+                                    Kellgren-Lawrence method evaluates severity of knee OA as a sum score according to measurements of joint space, surface deformation, sclerosis, and presence of osteophytes
+                                </Typography>
+                                <Typography sx={{ fontSize: 12 }} display="block">
+                                    Grade 0 = 0 points;
+                                </Typography>
+                                <Typography sx={{ fontSize: 12 }} display="block">
+                                    Grade 1 = 1-2 points;
+                                </Typography>
+                                <Typography sx={{ fontSize: 12 }} display="block">
+                                    Grade 2 = 3-4 points
+                                </Typography>
+                                <Typography sx={{ fontSize: 12 }} display="block">
+                                    Grade 3 = 5-9 points;
+                                </Typography>
+                                <Typography paragraph sx={{ fontSize: 12 }} display="block">
+                                    Grade 4 = 10 points
+                                </Typography>
+                                <Typography sx={{ fontSize: 8, fontStyle: 'italic' }}>
+                                    Wick et al. Clinical Imaging Assessment of Knee Osteoarthritis in the Elderly. 2014.
+                                </Typography>
+                                <Typography sx={{ fontSize: 8, fontStyle: 'italic' }}>
+                                    Kellgren & Lawrence. Radiological Assessment of Osteoarthrosis. 1957.
+                                </Typography>
+                            </React.Fragment>
+                        }>
+                            <Icon style={{ float: 'right', color: 'inherit' }} >
+                                <InfoOutlinedIcon fontSize="small" />
+                            </Icon>
+                        </Tooltip>
+                    </Card>
+                </Box>
 
                 {/* physician notes from preview page */}
                 <form noValidate autoComplete='off'>
