@@ -2,8 +2,10 @@ import React, { useContext } from "react";
 import { StepContext } from "../context/StepContext";
 import { TextField } from "@mui/material";
 import Stack from '@mui/material/Stack';
-import { Select, MenuItem, FormControl, InputLabel } from "@material-ui/core";
-
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -19,13 +21,20 @@ export default function PreviewImagesUserNotes(props) {
 
     const [context, setContext] = useContext(StepContext);
 
-    const xRayNotes = context.xRayNotes
-
     let setXRayNotesOnKeyToValue = (key, value) => {
-        xRayNotes[key] = value
+        let updatedXRayNotes = context.xRayNotes
+        updatedXRayNotes[key] = value
         setContext(context => ({
             ...context,
-            xRayNotes: xRayNotes
+            xRayNotes: updatedXRayNotes
+        }))
+
+        setContext(context => ({
+            ...context,
+            xRayNotes: {
+                ...context.xRayNotes,
+                KL: KL()
+            }
         }))
     }
 
@@ -37,23 +46,29 @@ export default function PreviewImagesUserNotes(props) {
 
     // for KL Score
     // composite calc. found in Wick 2013 (original defined in Kellgren 1957)
-    function KL(osteophyte, jointSpace, sclerosis, deformation) {
+    // for KL Score
+    // composite calc. found in Wick 2013 (original defined in Kellgren 1957)
+    const KL = () => {
 
-        var total = osteophyte + jointSpace + sclerosis + deformation
+        let elements = [
+            context.xRayNotes.osteophyte,
+            context.xRayNotes.jointSpace,
+            context.xRayNotes.sclerosis,
+            context.xRayNotes.deformation
+        ]
 
-        if (total == 10) {
-            context.xRayNotes.KL = 4;
-        } else if (total >= 5) {
-            context.xRayNotes.KL = 3;
-        } else if (total >= 3) {
-            context.xRayNotes.KL = 2;
-        } else if (total >= 1) {
-            context.xRayNotes.KL = 1;
-        } else {
-            context.xRayNotes.KL = 0;
-        }
+        // convert elements to ints
+        elements = elements.map(x => { return parseInt(x.split(" ")[0]) })
+        let total = elements.reduce((a, b) => a + b)
 
-        return context.xRayNotes.KL
+        let calculatedKLScore = 0
+
+        if (total == 10) calculatedKLScore = 4
+        else if (total >= 5) calculatedKLScore = 3
+        else if (total >= 3) calculatedKLScore = 2
+        else if (total >= 1) calculatedKLScore = 1
+
+        return calculatedKLScore
     }
 
     return (
@@ -72,9 +87,9 @@ export default function PreviewImagesUserNotes(props) {
                         value={context.xRayNotes.osteophyte}
                         onChange={(event) => { setXRayNotesOnKeyToValue("osteophyte", event.target.value) }}
                     >
-                        <MenuItem value={0}>0 - None</MenuItem>
-                        <MenuItem value={1}>1 - Definite</MenuItem>
-                        <MenuItem value={2}>2 - Large</MenuItem >
+                        <MenuItem value={"0 - None"}>0 - None</MenuItem>
+                        <MenuItem value={"1 - Definite"}>1 - Definite</MenuItem>
+                        <MenuItem value={"2 - Large"}>2 - Large</MenuItem >
                     </Select>
                 </FormControl>
 
@@ -88,10 +103,10 @@ export default function PreviewImagesUserNotes(props) {
                         value={context.xRayNotes.jointSpace}
                         onChange={(event) => { setXRayNotesOnKeyToValue("jointSpace", event.target.value) }}
                     >
-                        <MenuItem value={0}>0 - Normal</MenuItem>
-                        <MenuItem value={1}>1 - Narrowing</MenuItem>
-                        <MenuItem value={2}>2 - Advanced Narrowing</MenuItem >
-                        <MenuItem value={3}>3 - Gone</MenuItem >
+                        <MenuItem value={"0 - Normal"}>0 - Normal</MenuItem>
+                        <MenuItem value={"1 - Narrowing"}>1 - Narrowing</MenuItem>
+                        <MenuItem value={"2 - Advanced Narrowing"}>2 - Advanced Narrowing</MenuItem >
+                        <MenuItem value={"3 - Gone"}>3 - Gone</MenuItem >
                     </Select>
                 </FormControl>
 
@@ -105,10 +120,10 @@ export default function PreviewImagesUserNotes(props) {
                         value={context.xRayNotes.sclerosis}
                         onChange={(event) => { setXRayNotesOnKeyToValue("sclerosis", event.target.value) }}
                     >
-                        <MenuItem value={0}>0 - None</MenuItem>
-                        <MenuItem value={1}>1 - Discrete</MenuItem>
-                        <MenuItem value={2}>2 - Discrete Sclerosis w/ Cyst</MenuItem >
-                        <MenuItem value={3}>3 - Severe Sclerosis w/ Cyst</MenuItem >
+                        <MenuItem value={"0 - None"}>0 - None</MenuItem>
+                        <MenuItem value={"1 - Discrete"}>1 - Discrete</MenuItem>
+                        <MenuItem value={"2 - Discrete Sclerosis w/ Cyst"}>2 - Discrete Sclerosis w/ Cyst</MenuItem >
+                        <MenuItem value={"3 - Severe Sclerosis w/ Cyst"}>3 - Severe Sclerosis w/ Cyst</MenuItem >
                     </Select>
                 </FormControl>
 
@@ -122,9 +137,9 @@ export default function PreviewImagesUserNotes(props) {
                         value={context.xRayNotes.deformation}
                         onChange={(event) => { setXRayNotesOnKeyToValue("deformation", event.target.value) }}
                     >
-                        <MenuItem value={0}>0 - None</MenuItem>
-                        <MenuItem value={1}>1 - Discrete</MenuItem>
-                        <MenuItem value={2}>2 - Strong</MenuItem >
+                        <MenuItem value={"0 - None"}>0 - None</MenuItem>
+                        <MenuItem value={"1 - Discrete"}>1 - Discrete</MenuItem>
+                        <MenuItem value={"2 - Strong"}>2 - Strong</MenuItem >
                     </Select>
                 </FormControl>
 
@@ -138,12 +153,7 @@ export default function PreviewImagesUserNotes(props) {
                                         User Calculated Kellgren-Lawrence Score
                                     </Typography>
                                     <Typography variant="h5" component="div" color="#2824D1" align='center'>
-                                        {KL(
-                                            context.xRayNotes.osteophyte,
-                                            context.xRayNotes.jointSpace,
-                                            context.xRayNotes.sclerosis,
-                                            context.xRayNotes.deformation
-                                        )}
+                                        {context.xRayNotes.KL}
                                     </Typography>
                                 </CardContent>
                             </React.Fragment>

@@ -33,6 +33,7 @@ html,
 
 .stepButton {
   font-size: 16px !important;
+  cursor: pointer;
 }
 
 .MuiStepLabel-iconContainer {
