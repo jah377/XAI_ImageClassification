@@ -158,12 +158,6 @@ export default function Analysis(props) {
             {/* <Stack direction="row" alignItems="flex-start" justifyContent="space-between" alignContent="center" spacing={5}> */}
             <Stack direction="row" alignItems="flex-start" justifyContent="center" spacing={2}>
 
-                <Button onClick={() => setContext(context => ({
-                    ...context,
-                    step: context.step + 1, // incrementing the step counter, we get navigated to the next step "Preview Image"
-                    visualization: visualization // TODO set visualization into the proper structure of context.images.klScores.visualization
-                }))} >Create Report</Button>
-
                 {/* left column */}
                 <Stack>
                     {/* predicted kl score */}
@@ -275,8 +269,15 @@ export default function Analysis(props) {
                 </div>
 
                 {/* right column */}
-                <AnalysisUserNotes />
+                <Stack direction="column" alignItems="flex-start" justifyContent="center" spacing={2}>
+                    <AnalysisUserNotes />
 
+                    <Button fullWidth variant="contained" onClick={() => setContext(context => ({
+                        ...context,
+                        step: context.step + 1, // incrementing the step counter, we get navigated to the next step "Preview Image"
+                        visualization: visualization // TODO set visualization into the proper structure of context.images.klScores.visualization
+                    }))} >Create Report</Button>
+                </Stack>
             </Stack >
         </div>
     );
