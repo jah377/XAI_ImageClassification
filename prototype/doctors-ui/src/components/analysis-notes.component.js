@@ -4,17 +4,13 @@ import { TextField } from "@mui/material";
 import Stack from '@mui/material/Stack';
 import { Select, MenuItem, FormControl, InputLabel } from "@material-ui/core";
 
-
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { Tooltip } from "@mui/material";
 
-
-// YOUTUBE: https://www.youtube.com/watch?v=sTdt2cJS2dg
-
-export default function PreviewImagesUserNotes(props) {
+export default function AnalysisUserNotes(props) {
 
     const [context, setContext] = useContext(StepContext);
 
@@ -55,11 +51,12 @@ export default function PreviewImagesUserNotes(props) {
         return context.xRayNotes.KL
     }
 
+
     return (
         <div>
             <Stack direction="column" alignItems="left" justifyContent="space-between" spacing={1}>
 
-                <h2>Enter Radiographic Grading of Knee OA</h2>
+                Update Notes If Needed
 
                 {/* dropdown -- osteophytes notes */}
                 <FormControl fullWidth className='menu-input'>
@@ -184,13 +181,13 @@ export default function PreviewImagesUserNotes(props) {
                 <form noValidate autoComplete='off'>
                     <TextField
                         className="upload-notes"
-                        label="Add XRay Notes"
+                        label="Add Analysis Notes"
                         varient="outlined"
                         multiline
                         rows={10}
                         fullWidth
-                        value={context.xRayNotes.notes}
-                        onChange={(event) => { setXRayNotesOnKeyToValue("notes", event.target.value) }}
+                        value={context.xRayNotes.analysis_notes}
+                        onChange={(event) => { setXRayNotesOnKeyToValue("analysis_notes", event.target.value) }}
                     />
                 </form>
 
