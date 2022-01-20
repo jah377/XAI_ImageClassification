@@ -33,9 +33,15 @@ html,
 }
 
 .upload-container {
-  border: 2px dashed #AAAa;
-  height: 400px;
-  width: 400px;
+  /* border: 2px dashed #AAAa; */
+  /* min-width: 336; */
+  width: 448px;
+  max-width: 448px;
+}
+
+.ReactCrop__image {
+  max-height: 600px;
+  width: 448px;
 }
 
 .preview {

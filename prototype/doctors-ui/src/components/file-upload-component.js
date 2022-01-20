@@ -7,6 +7,10 @@ import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 
+import ReactCrop from 'react-image-crop';
+import 'react-image-crop/dist/ReactCrop.css';
+
+
 const Input = styled('input')({
     display: 'none',
 });
@@ -54,35 +58,44 @@ export default function UploadImages(props) {
         imageInfos,
     } = state;
 
+    const [crop, setCrop] = useState({
+        aspect: 2 / 2,
+        x: 0,
+        y: 0,
+        width: 448,
+    });
+
+    const setInitialCrop = image => {
+        console.log(image)
+    }
+
     return (
         <div>
+            <div>
+                <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
+                    <label htmlFor="contained-button-file">
+                        <Input accept="image/*" id="contained-button-file" type="file" onChange={selectFile} />
+                        <Button variant="contained" component="span" size="large">
+                            Select
+                        </Button>
+                    </label>
+                    <Button variant="contained" component="span" size="large" onClick={upload}>
+                        Upload
+                    </Button>
+                </Stack>
+            </div>
             <Stack direction="row" alignItems="flex-start" justifyContent="center" spacing={2}>
-
                 <div>
                     <div className="upload-container">
                         {/* TODO make this a drag and drop zone */}
                         {/* <MyDropZone onSuccess={this.upload}/> */}
                         {previewImage && (
-                            <img className="upload" src={previewImage} alt="" />
+                            <ReactCrop src={previewImage} crop={crop} onChange={newCrop => setCrop(newCrop)} onImageLoaded={image => setInitialCrop(image)}/>
                         )}
 
                         {!previewImage && context.previewImage && (
                             <img className="upload" src={context.previewImage} alt="" />
                         )}
-                    </div>
-
-                    <div>
-                        <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
-                            <label htmlFor="contained-button-file">
-                                <Input accept="image/*" id="contained-button-file" type="file" onChange={selectFile} />
-                                <Button variant="contained" component="span" size="large">
-                                    Select
-                                </Button>
-                            </label>
-                            <Button variant="contained" component="span" size="large" onClick={upload}>
-                                Upload
-                            </Button>
-                        </Stack>
                     </div>
                 </div>
                 <div className='upload-notes'>
