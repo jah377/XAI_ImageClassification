@@ -20,54 +20,40 @@ export default function UploadImages(props) {
 
     const [context, setContext] = useContext(StepContext);
 
-    const [state, setState] = useState({
-        currentFile: undefined,
-        previewImage: undefined,
-        imageInfos: [],
-    });
+    let imgRef = React.createRef()
 
     const selectFile = (event) => {
         const reader = new FileReader();
         reader.readAsDataURL(event.target.files[0]);
         reader.onerror = error => console.log(error);
         reader.onload = () => {
-            setState(state => ({
-                ...state,
+            setContext(context => ({
+                ...context,
                 // currentFile: event.target.files[0],
-                previewImage: reader.result
+                selectedImage: reader.result
             }))
         }
     }
 
     const upload = () => {
-        FileUploadService.upload(state.previewImage, (id) => {
-            setContext(context => ({
-                ...context,
-                uploadId: id,
-                step: context.step + 1, // incrementing the step counter, we get navigated to the next step "Preview Image"
-                previewImage: state.previewImage
-            }))
-        })
+        const width = imgRef.imageRef.current.clientWidth
+        const height = imgRef.imageRef.current.clientHeight
+        const croppedImage = FileUploadService.getCrop(context.selectedImage, crop, width, height)
+        setContext(context => ({
+            ...context,
+            step: context.step + 1, // incrementing the step counter, we get navigated to the next step "Preview Image"
+            selectedImage: context.selectedImage,
+            previewImage: croppedImage
+        }))
     }
 
-    const {
-        currentFile,
-        previewImage,
-        progress,
-        message,
-        imageInfos,
-    } = state;
-
     const [crop, setCrop] = useState({
+        unit: 'px',
         aspect: 2 / 2,
         x: 0,
         y: 0,
-        width: 448,
+        width: 336,
     });
-
-    const setInitialCrop = image => {
-        console.log(image)
-    }
 
     return (
         <div>
@@ -80,7 +66,7 @@ export default function UploadImages(props) {
                         </Button>
                     </label>
                     <Button variant="contained" component="span" size="large" onClick={upload}>
-                        Upload
+                        Preview Selection
                     </Button>
                 </Stack>
             </div>
@@ -89,12 +75,8 @@ export default function UploadImages(props) {
                     <div className="upload-container">
                         {/* TODO make this a drag and drop zone */}
                         {/* <MyDropZone onSuccess={this.upload}/> */}
-                        {previewImage && (
-                            <ReactCrop src={previewImage} crop={crop} onChange={newCrop => setCrop(newCrop)} onImageLoaded={image => setInitialCrop(image)}/>
-                        )}
-
-                        {!previewImage && context.previewImage && (
-                            <img className="upload" src={context.previewImage} alt="" />
+                        {context.selectedImage && (
+                            <ReactCrop src={context.selectedImage} ref={r => imgRef = r} crop={crop} onChange={newCrop => setCrop(newCrop)} />
                         )}
                     </div>
                 </div>
