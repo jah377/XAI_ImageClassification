@@ -83,7 +83,7 @@ export default function UploadImages(props) {
 
                     <Stack direction="row" alignItems="flex-start" justifyContent="flex-end" spacing={2} sx={{marginTop: "4%"}}>
                         <Button variant="contained" component="span" size="large" onClick={upload}>
-                            Preview Selection
+                            Preview X-ray
                         </Button>
                     </Stack>
                 </div>
