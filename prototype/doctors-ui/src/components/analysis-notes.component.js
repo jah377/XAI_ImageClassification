@@ -70,11 +70,13 @@ export default function AnalysisUserNotes(props) {
     return (
         <div>
             <Stack direction="column" alignItems="left" justifyContent="space-between" spacing={1}>
-                Update Notes If Needed
+                <h3>Update Notes If Needed</h3>
+
                 {/* dropdown -- osteophytes notes */}
-                <FormControl fullWidth className='menu-input'>
+                <FormControl >
                     <InputLabel>Select Osteophyte Formation</InputLabel>
                     <Select
+                        label="Select Osteophyte Formation"
                         open={openOsteophyte}
                         onClose={() => { setOpen_osteophyte(false) }}
                         onOpen={() => { setOpen_osteophyte(true) }}
@@ -91,6 +93,7 @@ export default function AnalysisUserNotes(props) {
                 <FormControl fullWidth className='menu-input'>
                     <InputLabel>Select Joint Space Width</InputLabel>
                     <Select
+                        label="Select Joint Space Width"
                         open={openJoint}
                         onClose={() => { setOpenJoint(false) }}
                         onOpen={() => { setOpenJoint(true) }}
@@ -108,6 +111,7 @@ export default function AnalysisUserNotes(props) {
                 <FormControl fullWidth className='menu-input'>
                     <InputLabel>Select Subchondral Sclerosis</InputLabel>
                     <Select
+                        label="Select Subchondral Sclerosis"
                         open={openSclerosis}
                         onClose={() => { setOpen_sclerosis(false) }}
                         onOpen={() => { setOpen_sclerosis(true) }}
@@ -125,6 +129,7 @@ export default function AnalysisUserNotes(props) {
                 <FormControl fullWidth className='menu-input'>
                     <InputLabel>Select Deformation</InputLabel>
                     <Select
+                        label="Select Deformation"
                         open={openDeformation}
                         onClose={() => { setOpen_deformation(false) }}
                         onOpen={() => { setOpen_deformation(true) }}
@@ -195,7 +200,7 @@ export default function AnalysisUserNotes(props) {
                         label="Add Analysis Notes"
                         varient="outlined"
                         multiline
-                        rows={10}
+                        rows={5}
                         fullWidth
                         value={context.xRayNotes.analysis_notes}
                         onChange={(event) => { setXRayNotesOnKeyToValue("analysis_notes", event.target.value) }}
