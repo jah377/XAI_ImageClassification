@@ -74,6 +74,7 @@ export default function PreviewImagesUserNotes(props) {
     return (
         <div>
             <Stack direction="column" alignItems="left" justifyContent="space-between" spacing={1}>
+
                 <h3>Enter Radiographic Grading of Knee OA</h3>
 
                 {/* dropdown -- osteophytes notes */}
