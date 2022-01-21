@@ -22,18 +22,20 @@ export default function PDFReport(props) {
     const patientNotes = props.content.patientNotes
     const xRayNotes = props.content.xRayNotes
 
-    patientNotes.appointmentDate = patientNotes.appointmentDate? dateToString(patientNotes.appointmentDate) : ""
+    patientNotes.appointmentDate = patientNotes.appointmentDate ? dateToString(patientNotes.appointmentDate) : ""
     patientNotes.dateOfBirth = patientNotes.dateOfBirth ? dateToString(patientNotes.dateOfBirth) : ""
 
-    
+
     const styles = props.styles
-    
+
     const images = props.content.images
-    
+
     const explanations = images.explanations.filter(e => { return e.active })
     const klScores = props.content.klScores
     klScores.distributions = klScores.distributions.sort((k, l) => { return k.score - l.score })
     const visualization = props.content.klScores.visualization
+
+    const klScore = props.content.klScore
 
     const patientInfoHeader = <View style={styles.patientInformationHeader} >
         <View style={styles.patientInformationHeader.element}>
@@ -160,14 +162,14 @@ export default function PDFReport(props) {
                             <View style={styles.notes}>
                                 <View style={styles.klScoreContainer}>
                                     <Text style={styles.description}>Predicted Kellgren-Lawrence Score</Text>
-                                    <Text style={styles.klScore}>{props.content.klScore} </Text>
+                                    <Text style={styles.klScore}>{klScore} </Text>
                                 </View>
 
                                 <View style={styles.elementListing}>
-                                    {props.content.klScores.distributions.map((dist, i) => {
+                                    {klScores.distributions.map((dist, i) => {
                                         return <View key={`${i}-score-dist`} style={styles.elementListing.child}>
                                             <Text key={`${i}-score-dist-desc`} style={styles.description}>KL Score {dist.score}</Text>
-                                            <Text key={`${i}-score-dist-text`}>{dist.prob}% </Text>
+                                            <Text key={`${i}-score-dist-text`}>{(dist.prob).toFixed(3)}% </Text>
                                         </View>
                                     })}
                                 </View>
@@ -185,58 +187,66 @@ export default function PDFReport(props) {
                             </View>
                         </View>
 
-                        <Text style={styles.header2, { paddingTop: "5%" }}>Observations</Text>
+                        <View style={styles.xray}>
+                            <Text style={styles.description}>Analysis Notes</Text>
+                            <Text>{xRayNotes.analysis_notes}</Text>
+                        </View>
 
-                        {/* IMAGE DISPLAY */}
-                        {explanations.map((explanation, index) => {
-                            return <View
-                                key={`{${index}_explanationsContainer}`}
-                                style={styles.images}
-                                wrap={false}>
-                                <View key={`{${index}_baseImageContainer}`}>
-                                    <Text key={`{${index}_baseImageDescription}`} style={styles.description}>Original Image</Text>
+
+                    </View>
+                </View>
+            </Page>
+            <Page size="A4" style={styles.page}>
+                {/* PATIENT INFORMATION */}
+                {header}
+                {patientInfoHeader}
+                <View style={styles.pageLayout}>
+                    <Text style={styles.header2}>Observations</Text>
+
+                    {/* IMAGE DISPLAY */}
+                    {explanations.map((explanation, index) => {
+                        return <View
+                            key={`{${index}_explanationsContainer}`}
+                            style={styles.images}
+                            wrap={false}>
+                            <View key={`{${index}_baseImageContainer}`}>
+                                <Text key={`{${index}_baseImageDescription}`} style={styles.description}>Original Image</Text>
+                                <Image
+                                    key={`{${index}_baseImage}`}
+                                    style={{
+                                        width: images.baseImage.width,
+                                        height: images.baseImage.height
+                                    }}
+                                    src={`data:image/png;base64,${images.baseImage.image}`}
+                                />
+                            </View>
+                            <View key={`{${index}_analysisContainer}`}>
+                                <Text key={`{${index}_analysisDescription}`} style={styles.description}>Analysis - {explanation.name} </Text>
+                                <View>
                                     <Image
-                                        key={`{${index}_baseImage}`}
+                                        key={`{${index}_analysisBase}`}
                                         style={{
                                             width: images.baseImage.width,
                                             height: images.baseImage.height
                                         }}
                                         src={`data:image/png;base64,${images.baseImage.image}`}
                                     />
-                                </View>
-                                <View key={`{${index}_analysisContainer}`}>
-                                    <Text key={`{${index}_analysisDescription}`} style={styles.description}>Analysis - {explanation.name} </Text>
-                                    <View>
-                                        <Image
-                                            key={`{${index}_analysisBase}`}
-                                            style={{
-                                                width: images.baseImage.width,
-                                                height: images.baseImage.height
-                                            }}
-                                            src={`data:image/png;base64,${images.baseImage.image}`}
-                                        />
-                                        <Image
-                                            key={`{${index}_analysisOverlay}`}
-                                            style={{
-                                                opacity: explanation.style.opacity,
-                                                width: explanation.width,
-                                                height: explanation.height,
-                                                position: "absolute",
-                                                left: 0,
-                                                top: 0,
-                                            }}
-                                            src={explanation.image}
-                                        />
-                                    </View>
+                                    <Image
+                                        key={`{${index}_analysisOverlay}`}
+                                        style={{
+                                            opacity: explanation.style.opacity,
+                                            width: explanation.width,
+                                            height: explanation.height,
+                                            position: "absolute",
+                                            left: 0,
+                                            top: 0,
+                                        }}
+                                        src={explanation.image}
+                                    />
                                 </View>
                             </View>
-                        })}
-
-                        <View style={styles.xray}>
-                            <Text style={styles.description}>Analysis Notes</Text>
-                            <Text>{xRayNotes.analysis_notes}</Text>
                         </View>
-                    </View>
+                    })}
                 </View>
             </Page>
         </Document >

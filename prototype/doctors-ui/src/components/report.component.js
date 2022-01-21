@@ -66,12 +66,6 @@ export default function Report() {
             paddingBottom: "3%",
         },
 
-        header2: {
-            fontSize: "17",
-            textAlign: "left",
-            paddingBottom: "3%",
-        },
-
         headerDescription: {
             fontSize: 9,
             color: "lightgrey"
