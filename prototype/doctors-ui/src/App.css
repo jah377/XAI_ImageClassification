@@ -108,15 +108,10 @@ html,
 }
 
 .preview {
-  max-width: 400px;
+  /* max-width: 400px; */
+  min-width:448px;
+  min-height:448px;
 }
-
-.preview-container {
-  border: 2px dashed #AAAa;
-  height: 400px;
-  width: 400px;
-}
-
 
 /* ANALYSIS COMPONENT */
 
@@ -125,10 +120,6 @@ html,
   display: flex;
   flex-direction: row;
   /* justify-content: ; */
-}
-
-div {
-  /* width: 100%; */
 }
 
 .analysis-title {
