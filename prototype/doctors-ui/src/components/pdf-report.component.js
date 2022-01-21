@@ -281,10 +281,6 @@ export default function PDFReport(props) {
                                         <Image
                                             key={`{${index}_analysisOverlay}`}
                                             style={{
-                                                width: images.baseImage.width,
-                                                height: images.baseImage.height
-                                            }}
-                                            style={{
                                                 opacity: explanation.style.opacity,
                                                 width: explanation.width,
                                                 height: explanation.height,

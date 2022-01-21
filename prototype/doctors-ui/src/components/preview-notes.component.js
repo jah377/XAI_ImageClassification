@@ -63,7 +63,7 @@ export default function PreviewImagesUserNotes(props) {
 
         let calculatedKLScore = 0
 
-        if (total == 10) calculatedKLScore = 4
+        if (total === 10) calculatedKLScore = 4
         else if (total >= 5) calculatedKLScore = 3
         else if (total >= 3) calculatedKLScore = 2
         else if (total >= 1) calculatedKLScore = 1
