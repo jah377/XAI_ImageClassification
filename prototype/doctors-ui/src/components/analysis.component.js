@@ -56,12 +56,33 @@ export default function Analysis(props) {
             }
         }
 
+        const klScores = response.klScores
+        const maxKlScore = klScores.distributions.sort((k, l) => { return l.prob - k.prob })[0]
+    
+        klScores.distributions = klScores.distributions.sort((k, l) => { return k.score - l.score })
+        klScores.distributions = klScores.distributions.map(s => { return { ...s, "prob": s.prob * 100 } })
+
+        const chartData = {
+            labels: klScores.distributions.map(s => s.score),
+            datasets: [
+                {
+                    label: "Kellgren-Lawrence Score",
+                    data: klScores.distributions.map(s => s.prob),
+                    backgroundColor: [
+                        "#2a71d0"
+                    ]
+                }
+            ]
+        }
+
         setValue({
             ...value,
             "layers": layers,
             "selectedLayerIndex": 0,
             "baseImage": baseImage,
-            "klScore": response.klScore,
+            "klScores": response.klScores,
+            "klScore": maxKlScore.score,
+            "chartData": chartData,
             "loading": false
         })
         setContext({ ...context, value })
@@ -77,10 +98,9 @@ export default function Analysis(props) {
     useEffect(() => {
         if (value.layers.length === 0) {
             setValue({ ...value, loading: true })
-            // AnalysisDisplayService.fetchData(context['uploadId'], setResponse)
-            AnalysisDisplayService.fetchData("test", setResponse)
+            AnalysisDisplayService.fetchData(context.previewImage, setResponse)
         }
-    })
+    }, [])
 
     const handleOpacity = (newOpacity, layer) => {
         let copyLayer = layer
@@ -110,49 +130,6 @@ export default function Analysis(props) {
         setValue({ ...value, "selectedLayerIndex": event.target.value })
     }
 
-    // TODO remove this stub and receive actual response
-    let klScores = {
-        "distributions": [
-            {
-                "score": 0,
-                "prob": 0.0
-            },
-            {
-                "score": 1,
-                "prob": 0.0
-            },
-            {
-                "score": 2,
-                "prob": 0.0
-            },
-            {
-                "score": 3,
-                "prob": 0.04
-            },
-            {
-                "score": 4,
-                "prob": 0.95
-            }
-        ]
-    }
-
-    klScores.distributions = klScores.distributions.sort((k, l) => { return k.score - l.score })
-    klScores.distributions = klScores.distributions.map(s => { return { ...s, "prob": s.prob * 100 } })
-
-
-    const chartData = {
-        labels: klScores.distributions.map(s => s.score),
-        datasets: [
-            {
-                label: "Kellgren-Lawrence Score",
-                data: klScores.distributions.map(s => s.prob),
-                backgroundColor: [
-                    "#2a71d0"
-                ]
-            }
-        ]
-    }
-
     let visualization = ""
 
     return (
@@ -162,8 +139,6 @@ export default function Analysis(props) {
 
                 {/* left column */}
                 <Stack>
-
-
                     {/* predicted kl score */}
                     <Box fullWidth>
                         <Card variant="outlined">
@@ -195,9 +170,12 @@ export default function Analysis(props) {
                         </Card>
                     </Box>
 
-                    <BarChart height="300px" chartData={chartData} callback={(v) => {
-                        visualization = v
-                    }} />
+                    {value.chartData &&
+                        <BarChart height="300px" chartData={value.chartData} callback={(v) => {
+                            visualization = v
+                        }} />
+                    }
+
 
                 </Stack>
 
@@ -205,10 +183,8 @@ export default function Analysis(props) {
                 <div>
                     {value.loading && (
                         <Stack spacing={1}>
-                            <Skeleton animation="wave" variant="rectangular" width={224} height={224} />
-                            <Skeleton animation="wave" variant="rectangular" width={228} height={75} />
-                            <Skeleton animation="wave" variant="rectangular" width={228} height={75} />
-                            <Skeleton animation="wave" variant="rectangular" width={228} height={75} />
+                            <Skeleton animation="wave" variant="rectangular" width={336} height={366} />
+                            <Skeleton animation="wave" variant="rectangular" width={336} height={100} />
                         </Stack>
                     )}
 
