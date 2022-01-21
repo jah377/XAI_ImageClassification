@@ -42,6 +42,13 @@ export default function BarChart(props) {
                         }
                     },
                     maintainAspectRatio: false,
+                    // responsive: true,
+                    animation: {
+                        onComplete: function (animation) {
+                            props.callback(ref.current.toBase64Image())
+                        }
+                    },
+                    animation: false,
                     plugins: {
                         title: {
                             display: true,

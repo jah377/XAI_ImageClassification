@@ -58,7 +58,7 @@ export default function Analysis(props) {
 
         const klScores = response.klScores
         const maxKlScore = klScores.distributions.sort((k, l) => { return l.prob - k.prob })[0]
-    
+
         klScores.distributions = klScores.distributions.sort((k, l) => { return k.score - l.score })
         klScores.distributions = klScores.distributions.map(s => { return { ...s, "prob": s.prob * 100 } })
 
@@ -75,17 +75,29 @@ export default function Analysis(props) {
             ]
         }
 
-        setValue({
+        setValue(value => ({
             ...value,
             "layers": layers,
             "selectedLayerIndex": 0,
             "baseImage": baseImage,
-            "klScores": response.klScores,
+            "klScores": klScores,
             "klScore": maxKlScore.score,
             "chartData": chartData,
             "loading": false
-        })
-        setContext({ ...context, value })
+        }))
+
+        setContext(context => ({
+            ...context,
+            "images": {
+                "baseImage": baseImage,
+                "explanations": value.layers
+            },
+            "klScores": {
+                ...context.klScores,
+                distributions: klScores.distributions
+            },
+            "klScore": maxKlScore.score
+        }))
     }
 
     const [context, setContext] = useContext(StepContext);
@@ -130,8 +142,6 @@ export default function Analysis(props) {
         setValue({ ...value, "selectedLayerIndex": event.target.value })
     }
 
-    let visualization = ""
-
     return (
         <div>
 
@@ -172,10 +182,16 @@ export default function Analysis(props) {
 
                     {value.chartData &&
                         <BarChart height="300px" chartData={value.chartData} callback={(v) => {
-                            visualization = v
+                            console.log("CALLBACK BITCH")
+                            setContext(context => ({
+                                ...context,
+                                visualization: v,
+                                klScores: {
+                                    visualization: v
+                                }
+                            }))
                         }} />
                     }
-
 
                 </Stack>
 
@@ -258,8 +274,15 @@ export default function Analysis(props) {
 
                     <Button fullWidth variant="contained" onClick={() => setContext(context => ({
                         ...context,
-                        step: context.step + 1, // incrementing the step counter, we get navigated to the next step "Preview Image"
-                        visualization: visualization // TODO set visualization into the proper structure of context.images.klScores.visualization
+                        step: context.step + 1, // incrementing the step counter, we get navigated to the next step
+                        images: {
+                            ...value.images,
+                            baseImage: value.baseImage,
+                            explanations: value.layers
+                        },
+                        klScores: {
+                            ...context.klScores,
+                        }
                     }))} >Create Report</Button>
                 </Stack>
             </Stack >
