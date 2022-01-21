@@ -147,53 +147,61 @@ export default function Analysis(props) {
 
             <Stack direction="row" alignItems="flex-start" justifyContent="center" spacing={2}>
 
-                {/* left column */}
-                <Stack>
-                    {/* predicted kl score */}
-                    <Box fullWidth>
-                        <Card variant="outlined">
-                            {
-                                <React.Fragment>
-                                    <CardContent>
-                                        <Typography sx={{ fontSize: 14 }} align='center' color="#D1682E" gutterBottom>
-                                            Predicted Kellgren-Lawrence Score
-                                        </Typography>
-                                        <Typography variant="h5" component="div" color="#D1682E" align='center'>
-                                            {value.klScore}
-                                        </Typography>
-                                    </CardContent>
-                                </React.Fragment>
-                            }
+                {value.loading &&
+                    <Stack spacing={1}>
+                        <Skeleton animation="wave" variant="rectangular" width={"300px"} height={"125px"} />
+                        <Skeleton animation="wave" variant="rectangular" width={"300px"} height={"300px"} />
+                    </Stack>
+                }
 
-                            <Tooltip placement="left-end" title={
-                                <React.Fragment>
-                                    <Typography color="inherit">Calculated KL Score</Typography>
-                                    <Typography paragraph sx={{ fontSize: 12 }} display="block">
-                                        The KL score that the smart assistant calculated when assessing the XRay image
-                                    </Typography>
-                                </React.Fragment>
-                            }>
-                                <Icon style={{ float: 'right', color: 'inherit' }} >
-                                    <InfoOutlinedIcon fontSize="small" />
-                                </Icon>
-                            </Tooltip>
-                        </Card>
-                    </Box>
-
-                    {value.chartData &&
-                        <BarChart height="300px" chartData={value.chartData} callback={(v) => {
-                            console.log("CALLBACK BITCH")
-                            setContext(context => ({
-                                ...context,
-                                visualization: v,
-                                klScores: {
-                                    visualization: v
+                {!value.loading &&
+                    // left column
+                    <Stack>
+                        <Box fullWidth>
+                            <Card variant="outlined">
+                                {
+                                    <React.Fragment>
+                                        <CardContent>
+                                            <Typography sx={{ fontSize: 14 }} align='center' color="#D1682E" gutterBottom>
+                                                Predicted Kellgren-Lawrence Score
+                                            </Typography>
+                                            <Typography variant="h5" component="div" color="#D1682E" align='center'>
+                                                {value.klScore}
+                                            </Typography>
+                                        </CardContent>
+                                    </React.Fragment>
                                 }
-                            }))
-                        }} />
-                    }
 
-                </Stack>
+                                <Tooltip placement="left-end" title={
+                                    <React.Fragment>
+                                        <Typography color="inherit">Calculated KL Score</Typography>
+                                        <Typography paragraph sx={{ fontSize: 12 }} display="block">
+                                            The KL score that the smart assistant calculated when assessing the XRay image
+                                        </Typography>
+                                    </React.Fragment>
+                                }>
+                                    <Icon style={{ float: 'right', color: 'inherit' }} >
+                                        <InfoOutlinedIcon fontSize="small" />
+                                    </Icon>
+                                </Tooltip>
+                            </Card>
+                        </Box>
+
+                        {value.chartData &&
+                            <BarChart height="300px" chartData={value.chartData} callback={(v) => {
+                                console.log("CALLBACK BITCH")
+                                setContext(context => ({
+                                    ...context,
+                                    visualization: v,
+                                    klScores: {
+                                        visualization: v
+                                    }
+                                }))
+                            }} />
+                        }
+
+                    </Stack>
+                }
 
                 {/* middle column */}
                 <div>
