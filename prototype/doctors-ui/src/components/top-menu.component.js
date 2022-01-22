@@ -30,9 +30,9 @@ export default function HorizontalNonLinearStepper(props) {
     }
 
     return (
-        <div>
+        <div style={{ width: "100%" }}>
             <LandingPage />
-            <Stack className="stepper-container">
+            <Stack className="stepper-container" flexDirection="row" justifyContent="space-between">
                 <IconButton color="primary" aria-label="About the app" component="span" onClick={handleOpen}>
                     <InfoIcon />
                 </IconButton>
@@ -47,6 +47,7 @@ export default function HorizontalNonLinearStepper(props) {
                         </Step>
                     ))}
                 </Stepper>
+                <div/>
             </Stack>
         </div>
 
