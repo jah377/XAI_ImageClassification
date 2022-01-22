@@ -8,6 +8,10 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import LandingPage from './landing-page.component';
 
+
+import logo from './logoKNEEOXAI_cropped.svg'
+
+
 export default function HorizontalNonLinearStepper(props) {
 
     const [state, setState] = useContext(StepContext);
@@ -32,10 +36,14 @@ export default function HorizontalNonLinearStepper(props) {
     return (
         <div style={{ width: "100%" }}>
             <LandingPage />
-            <Stack className="stepper-container" flexDirection="row" justifyContent="space-between">
+            <div sx={{ marginTop: "2%", marginLeft: "2%", marginBottom: "10%" }}>
                 <IconButton color="primary" aria-label="About the app" component="span" onClick={handleOpen}>
-                    <InfoIcon />
+                    <img src={logo} alt="KNEE-O-XAI" />
+                    {/* <InfoIcon /> */}
                 </IconButton>
+            </div>
+            <Stack className="stepper-container" flexDirection="row" justifyContent="space-between">
+                <div />
                 <Stepper nonLinear activeStep={activeStep} className="stepper">
                     {steps.map((label, index) => (
                         <Step key={label} completed={completed[index]}>
@@ -47,7 +55,7 @@ export default function HorizontalNonLinearStepper(props) {
                         </Step>
                     ))}
                 </Stepper>
-                <div/>
+                <div />
             </Stack>
         </div>
 
