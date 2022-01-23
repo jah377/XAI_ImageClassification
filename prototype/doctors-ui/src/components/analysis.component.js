@@ -41,7 +41,7 @@ export default function Analysis(props) {
                 ...layer,
                 "active": true,
                 "style": { // base style for layered images
-                    "opacity": layer.name === "Heatmap" ? 0.3 : 1.0,
+                    "opacity": layer.name.includes("Heatmap") ? 0.8 : 1.0,
                     "display": "block",
                     "width": layer.width * 1.5
                 },

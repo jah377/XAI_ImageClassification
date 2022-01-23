@@ -87,8 +87,13 @@ class GradCAM:
         heatmap = (heatmap * 255).astype("uint8")
 
         heatmap = cv2.applyColorMap(heatmap, colormap)
-        # return the resulting heatmap to the calling function
-        return cv2.resize(heatmap, (WIDTH, HEIGHT))
+
+        rgba = cv2.cvtColor(heatmap, cv2.COLOR_RGB2RGBA)
+
+        # rgba(245,231,30,255) extreme yellow
+        # rgba(73,41,120,255) extreme blue
+        rgba[...,3] = (255-rgba[..., 0])
+        return cv2.resize(rgba, (WIDTH, HEIGHT))
 
     def overlay_heatmap(self, heatmap, image, alpha=0.5,
                         colormap=cv2.COLORMAP_VIRIDIS):
