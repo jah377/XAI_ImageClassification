@@ -127,6 +127,7 @@ class Outlining:
             w *= 0.9
             h *= 0.65
             w, h = int(w), int(h)
+            rect = cv2.rectangle(image, (x, y), (x + w, y + h), (36,255,12), 2)
 
         rgba = cv2.cvtColor(image, cv2.COLOR_RGB2RGBA)
         rgba[np.where(np.all(rgba[..., :3] == 255, -1))] = 0
@@ -147,7 +148,7 @@ class Outlining:
 
             w, h = int(w), int(h)
 
-            color = (252, 3, 3)
+            color = (0, 0, 245)
             thickness = 2
 
             # top left

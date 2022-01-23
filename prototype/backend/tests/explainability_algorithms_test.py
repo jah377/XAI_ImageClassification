@@ -43,10 +43,18 @@ class ExplainabilityAlgorithmsTest(unittest.TestCase):
     def test_TransparentBoundingBox(self):
         heatmap = cv2.imread('tests/heatmap1.png')
 
-        bb = self.outlining.drawHeatmapBasedBoundingBox(heatmap)
-        a = self.outlining.drawHeatmapBasedArrows(heatmap)
-        cv2.imwrite('tests/bb.png', bb)
-        cv2.imwrite('tests/arrows.png', a)
+        actualBoundingBox = self.outlining.drawHeatmapBasedBoundingBox(heatmap)
+        actualArrows = self.outlining.drawHeatmapBasedArrows(heatmap)
+
+        # for overwriting image
+        # cv2.imwrite('tests/bb.png', actualBoundingBox)
+        # cv2.imwrite('tests/arrows.png', actualArrows)
+
+        expectedBoundingBox = cv2.imread('tests/bb.png')
+        self.assertEqual(base64.b64encode(actualBoundingBox), base64.b64encode(expectedBoundingBox))
+
+        expectedArrows = cv2.imread('tests/arrows.png')
+        self.assertEqual(base64.b64encode(actualArrows), base64.b64encode(expectedArrows))
 
 if __name__ == '__main__':
     unittest.main()
