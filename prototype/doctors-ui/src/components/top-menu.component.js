@@ -3,7 +3,6 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import { StepContext } from "../context/StepContext"
 import { StepIcon, StepLabel } from '@mui/material';
-import InfoIcon from '@mui/icons-material/Info';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import LandingPage from './landing-page.component';

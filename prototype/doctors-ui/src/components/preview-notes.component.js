@@ -63,7 +63,7 @@ export default function PreviewImagesUserNotes(props) {
 
         let calculatedKLScore = 0
 
-        if (total == 10) calculatedKLScore = 4
+        if (total === 10) calculatedKLScore = 4
         else if (total >= 5) calculatedKLScore = 3
         else if (total >= 3) calculatedKLScore = 2
         else if (total >= 1) calculatedKLScore = 1
@@ -74,6 +74,7 @@ export default function PreviewImagesUserNotes(props) {
     return (
         <div>
             <Stack direction="column" alignItems="left" justifyContent="space-between" spacing={1}>
+
                 <h3>Enter Radiographic Grading of Knee OA</h3>
 
                 {/* dropdown -- osteophytes notes */}

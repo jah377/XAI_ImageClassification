@@ -5,6 +5,7 @@ import { Button, Stack } from "@mui/material";
 import PDFReport from "./pdf-report.component";
 import SourceCodeProRegular from "../fonts/Source_Code_Pro/SourceCodePro-Regular.ttf"
 import { StepContext } from "../context/StepContext";
+import SplitButton from "./buttons/dropdown-button.component";
 
 import {
     StyleSheet,
@@ -61,12 +62,6 @@ export default function Report() {
 
         header2: {
             fontSize: "19",
-            textAlign: "left",
-            paddingBottom: "3%",
-        },
-
-        header2: {
-            fontSize: "17",
             textAlign: "left",
             paddingBottom: "3%",
         },
@@ -183,7 +178,7 @@ export default function Report() {
         <div className="reportContainer">
             <Stack className="report" flexDirection="row" alignItems="center" justifyContent="space-between">
                 {/* TODO make this a button group and go back to each individual step */}
-                <Button variant="contained">Go back</Button>
+                <SplitButton />
                 <h1>Preview</h1>
                 <PDFDownloadLink style={styles.downloadButton} document={report} fileName={`${patientNotes.appointmentDate}_${patientNotes.lastName}_${patientNotes.firstName}`}>
                     {({ blob, url, loading, error }) => <Button variant="contained">Download Report</Button>}

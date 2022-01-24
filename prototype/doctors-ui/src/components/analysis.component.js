@@ -41,7 +41,7 @@ export default function Analysis(props) {
                 ...layer,
                 "active": true,
                 "style": { // base style for layered images
-                    "opacity": layer.name === "Heatmap" ? 0.3 : 1.0,
+                    "opacity": layer.name.includes("Heatmap") ? 0.8 : 1.0,
                     "display": "block",
                     "width": layer.width * 1.5
                 },
@@ -56,15 +56,48 @@ export default function Analysis(props) {
             }
         }
 
-        setValue({
+        const klScores = response.klScores
+        const maxKlScore = klScores.distributions.sort((k, l) => { return l.prob - k.prob })[0]
+
+        klScores.distributions = klScores.distributions.sort((k, l) => { return k.score - l.score })
+        klScores.distributions = klScores.distributions.map(s => { return { ...s, "prob": s.prob * 100 } })
+
+        const chartData = {
+            labels: klScores.distributions.map(s => s.score),
+            datasets: [
+                {
+                    label: "Kellgren-Lawrence Score",
+                    data: klScores.distributions.map(s => s.prob),
+                    backgroundColor: [
+                        "#2a71d0"
+                    ]
+                }
+            ]
+        }
+
+        setValue(value => ({
             ...value,
             "layers": layers,
             "selectedLayerIndex": 0,
             "baseImage": baseImage,
-            "klScore": response.klScore,
+            "klScores": klScores,
+            "klScore": maxKlScore.score,
+            "chartData": chartData,
             "loading": false
-        })
-        setContext({ ...context, value })
+        }))
+
+        setContext(context => ({
+            ...context,
+            "images": {
+                "baseImage": baseImage,
+                "explanations": value.layers
+            },
+            "klScores": {
+                ...context.klScores,
+                distributions: klScores.distributions
+            },
+            "klScore": maxKlScore.score
+        }))
     }
 
     const [context, setContext] = useContext(StepContext);
@@ -77,10 +110,9 @@ export default function Analysis(props) {
     useEffect(() => {
         if (value.layers.length === 0) {
             setValue({ ...value, loading: true })
-            // AnalysisDisplayService.fetchData(context['uploadId'], setResponse)
-            AnalysisDisplayService.fetchData("test", setResponse)
+            AnalysisDisplayService.fetchData(context.previewImage, setResponse)
         }
-    })
+    }, [])
 
     const handleOpacity = (newOpacity, layer) => {
         let copyLayer = layer
@@ -110,105 +142,73 @@ export default function Analysis(props) {
         setValue({ ...value, "selectedLayerIndex": event.target.value })
     }
 
-    // TODO remove this stub and receive actual response
-    let klScores = {
-        "distributions": [
-            {
-                "score": 0,
-                "prob": 0.0
-            },
-            {
-                "score": 1,
-                "prob": 0.0
-            },
-            {
-                "score": 2,
-                "prob": 0.0
-            },
-            {
-                "score": 3,
-                "prob": 0.04
-            },
-            {
-                "score": 4,
-                "prob": 0.95
-            }
-        ]
-    }
-
-    klScores.distributions = klScores.distributions.sort((k, l) => { return k.score - l.score })
-    klScores.distributions = klScores.distributions.map(s => { return { ...s, "prob": s.prob * 100 } })
-
-
-    const chartData = {
-        labels: klScores.distributions.map(s => s.score),
-        datasets: [
-            {
-                label: "Kellgren-Lawrence Score",
-                data: klScores.distributions.map(s => s.prob),
-                backgroundColor: [
-                    "#2a71d0"
-                ]
-            }
-        ]
-    }
-
-    let visualization = ""
-
     return (
         <div>
 
             <Stack direction="row" alignItems="flex-start" justifyContent="center" spacing={2}>
 
-                {/* left column */}
-                <Stack>
+                {value.loading &&
+                    <Stack spacing={1}>
+                        <Skeleton animation="wave" variant="rectangular" width={"300px"} height={"125px"} />
+                        <Skeleton animation="wave" variant="rectangular" width={"300px"} height={"300px"} />
+                    </Stack>
+                }
 
+                {!value.loading &&
+                    // left column
+                    <Stack>
+                        <Box fullWidth>
+                            <Card variant="outlined">
+                                {
+                                    <React.Fragment>
+                                        <CardContent>
+                                            <Typography sx={{ fontSize: 14 }} align='center' color="#D1682E" gutterBottom>
+                                                Predicted Kellgren-Lawrence Score
+                                            </Typography>
+                                            <Typography variant="h5" component="div" color="#D1682E" align='center'>
+                                                {value.klScore}
+                                            </Typography>
+                                        </CardContent>
+                                    </React.Fragment>
+                                }
 
-                    {/* predicted kl score */}
-                    <Box fullWidth>
-                        <Card variant="outlined">
-                            {
-                                <React.Fragment>
-                                    <CardContent>
-                                        <Typography sx={{ fontSize: 14 }} align='center' color="#D1682E" gutterBottom>
-                                            Predicted Kellgren-Lawrence Score
+                                <Tooltip placement="left-end" title={
+                                    <React.Fragment>
+                                        <Typography color="inherit">Calculated KL Score</Typography>
+                                        <Typography paragraph sx={{ fontSize: 12 }} display="block">
+                                            The KL score that the smart assistant calculated when assessing the XRay image
                                         </Typography>
-                                        <Typography variant="h5" component="div" color="#D1682E" align='center'>
-                                            {value.klScore}
-                                        </Typography>
-                                    </CardContent>
-                                </React.Fragment>
-                            }
+                                    </React.Fragment>
+                                }>
+                                    <Icon style={{ float: 'right', color: 'inherit' }} >
+                                        <InfoOutlinedIcon fontSize="small" />
+                                    </Icon>
+                                </Tooltip>
+                            </Card>
+                        </Box>
 
-                            <Tooltip placement="left-end" title={
-                                <React.Fragment>
-                                    <Typography color="inherit">Calculated KL Score</Typography>
-                                    <Typography paragraph sx={{ fontSize: 12 }} display="block">
-                                        The KL score that the smart assistant calculated when assessing the XRay image
-                                    </Typography>
-                                </React.Fragment>
-                            }>
-                                <Icon style={{ float: 'right', color: 'inherit' }} >
-                                    <InfoOutlinedIcon fontSize="small" />
-                                </Icon>
-                            </Tooltip>
-                        </Card>
-                    </Box>
+                        {value.chartData &&
+                            <BarChart height="300px" chartData={value.chartData} callback={(v) => {
+                                console.log("CALLBACK BITCH")
+                                setContext(context => ({
+                                    ...context,
+                                    visualization: v,
+                                    klScores: {
+                                        visualization: v
+                                    }
+                                }))
+                            }} />
+                        }
 
-                    <BarChart height="300px" chartData={chartData} callback={(v) => {
-                        visualization = v
-                    }} />
-
-                </Stack>
+                    </Stack>
+                }
 
                 {/* middle column */}
                 <div>
                     {value.loading && (
                         <Stack spacing={1}>
-                            <Skeleton animation="wave" variant="rectangular" width={224} height={224} />
-                            <Skeleton animation="wave" variant="rectangular" width={228} height={75} />
-                            <Skeleton animation="wave" variant="rectangular" width={228} height={75} />
-                            <Skeleton animation="wave" variant="rectangular" width={228} height={75} />
+                            <Skeleton animation="wave" variant="rectangular" width={336} height={366} />
+                            <Skeleton animation="wave" variant="rectangular" width={336} height={100} />
                         </Stack>
                     )}
 
@@ -282,8 +282,15 @@ export default function Analysis(props) {
 
                     <Button fullWidth variant="contained" onClick={() => setContext(context => ({
                         ...context,
-                        step: context.step + 1, // incrementing the step counter, we get navigated to the next step "Preview Image"
-                        visualization: visualization // TODO set visualization into the proper structure of context.images.klScores.visualization
+                        step: context.step + 1, // incrementing the step counter, we get navigated to the next step
+                        images: {
+                            ...value.images,
+                            baseImage: value.baseImage,
+                            explanations: value.layers
+                        },
+                        klScores: {
+                            ...context.klScores,
+                        }
                     }))} >Create Report</Button>
                 </Stack>
             </Stack >
