@@ -54,6 +54,7 @@ cd prototype/doctors-ui
 yarn build
 
 cp -r build/* ../backend/static/ # copy static files into static-folder of the python server
+cd ../..
 
 git add .
 git commit -m "New release"
