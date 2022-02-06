@@ -4,4 +4,4 @@ This is a prototype as part of the Data Systems Project (DSP) 2021 of the [Data 
 
 ## An XAI clinical decision support system approach for the Assessment of Knee Osteoarthritis
 
-![Screenshot of the Analysis Page displaying a heatmap overlaying a knee x-ray and having a prediction of a KL-score of 4 on the x-ray's left side]('/images/Screenshot 2022-02-06 at 10.50.52.png')
+![Screenshot of the Analysis Page displaying a heatmap overlaying a knee x-ray and having a prediction of a KL-score of 4 on the x-ray's left side](/images/analysis_page.png)
