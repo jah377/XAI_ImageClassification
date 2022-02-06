@@ -9,13 +9,13 @@ from services.image_converter import ImageConverter
 from services.prediction_service import PredictionService
 
 from constants import *
-app = Flask(__name__, static_url_path='/dsp')
-# app = Flask(__name__)
+# app = Flask(__name__, static_url_path='/dsp')
+app = Flask(__name__)
 CORS(app)
 
-@app.route('/', methods=['GET'])  # When someone goes to / on the server, execute the following function
-def home():
-    return app.send_static_file('index.html')
+# @app.route('/', methods=['GET'])  # When someone goes to / on the server, execute the following function
+# def home():
+#     return app.send_static_file('index.html')
 
 imgConverter = ImageConverter()
 predictionService = PredictionService()
@@ -41,23 +41,23 @@ def analysis():
 
     response["explanations"] = [
         {
-            "name": "Joint Space Narrowing - Arrows",
+            "name": "Arrows",
             "image": imgConverter.encodeToBase64(explanationService.get_arrows(heatmap)),
-            "description": "Arrows",
+            "description": "",
             "width": WIDTH,
             "height": HEIGHT,
             "order": 1
         },
         {
-            "name": "Joint Space Narrowing - Bounding Box",
+            "name": "Bounding Box",
             "image": imgConverter.encodeToBase64(explanationService.get_bounding_box(heatmap)),
-            "description": "fjsdkljfklsjdklfsjdklf",
+            "description": "",
             "width": WIDTH,
             "height": HEIGHT,
             "order": 2
         },
         {
-            "name": "Joint Space Narrowing - Heatmap",
+            "name": "Heatmap",
             "image": imgConverter.encodeToBase64(heatmap),
             "description": "Heatmap hightlighting which areas lead to the decision of the KL Score",
             "width": WIDTH,

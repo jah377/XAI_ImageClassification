@@ -13,3 +13,9 @@ This is a prototype as part of the Data Systems Project (DSP) 2021 of the [Data 
 
 ![Screenshot of the Analysis Page displaying a heatmap overlaying a knee x-ray and having a prediction of a KL-score of 4 on the x-ray's left side](/images/analysis_page.png)
 
+
+## How to run app locally
+
+[Setup and run instructions for the server](/prototype/backend/README.md)
+
+[Setup and run instructions for the UI](/prototype/doctors-ui/README.md)

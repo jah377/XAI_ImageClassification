@@ -43,7 +43,12 @@ pip freeze > requirements.txt
 python main.py
 ```
 
-## Deploying
+## Manual Deployment  (deprecated)
+
+*You would need heroku credentials setup for this, with the free plan this app is not deployable anymore due to restriction in RAM and disk size on Heroku*
+
+The main idea of this deployment process is to host UI and backend on one single server.
+This process builds the UI and copies its build to the flask server, which then hosts it as a static website. The final product can then be deployed to Heroku.
 
 ```
 git checkout deployment
