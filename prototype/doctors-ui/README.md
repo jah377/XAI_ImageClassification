@@ -2,6 +2,15 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+This UI is built with the versions:
+```bash
+yarn --version
+> 1.22.17
+node --verison
+> v14.17.1
+```
+Make sure to have these versions set in order to have it working properly.
+
 ## Setup
 To run and develop this app locally we use `yarn`.
 A prerequisite for `yarn` is to have `node` installed. 

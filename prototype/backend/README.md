@@ -1,5 +1,6 @@
 # Python Backend
 
+This app is built with Python 3.7.9., make sure to have this version set in order to have it working properly.
 
 ## Setup with `pip`
 
