@@ -1,4 +1,5 @@
-# Data Systems Course (5294DASP6Y): An XAI Clinical Decision Support System Approach for the Assessment of Knee Osteoarthritis
+# An XAI Clinical Decision Support System Approach for the Assessment of Knee Osteoarthritis
+*Data Systems Course (5294DASP6Y)*
 
 ![Screenshot of the Analysis Page displaying a heatmap overlaying a knee x-ray and having a prediction of a KL-score of 4 on the x-ray's left side](https://raw.github.com/jah377/XAI_ImageClassification/main/report/github_analysis.png)
 
